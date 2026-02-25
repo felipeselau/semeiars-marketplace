@@ -103,6 +103,37 @@ export const messages = {
     rating: 'Avaliação'
   },
 
+  seller_orders: {
+    title: 'Pedidos Recebidos',
+    new: 'Novos',
+    preparing: 'Preparando',
+    ready: 'Prontos',
+    completed: 'Concluídos',
+    all: 'Todos',
+    order_detail: 'Detalhes do Pedido',
+    update_status: 'Atualizar Status',
+    add_note: 'Adicionar Nota',
+    buyer_info: 'Informações do Comprador',
+    contact_buyer: 'Contatar Comprador',
+    timeline: 'Histórico',
+    estimated_pickup: 'Data de Retirada Prevista',
+    pickup_instructions: 'Instruções de Retirada/Entrega',
+    total_value: 'Valor Total',
+    mark_ready: 'Marcar como Pronto',
+    mark_completed: 'Concluir Pedido',
+    order_for: 'Pedido para'
+  },
+
+  status: {
+    pending: 'Aguardando Confirmação',
+    confirmed: 'Confirmado',
+    preparing: 'Preparando',
+    ready: 'Pronto para Retirada',
+    shipped: 'Enviado',
+    completed: 'Concluído',
+    cancelled: 'Cancelado'
+  },
+
   empty_states: {
     no_products: 'Nenhum produto encontrado.',
     no_orders: 'Você ainda não fez nenhum pedido.',
