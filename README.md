@@ -1,4 +1,4 @@
-# 🌾 SemeiRS - Marketplace C2C para Agricultura Familiar
+# 🌾 SemeiaRS - Marketplace C2C para Agricultura Familiar
 
 <p align="center">
   <a href="https://semeiars.com">
@@ -17,7 +17,7 @@
 
 ## 📖 Sobre o Projeto
 
-O **SemeiRS** é uma plataforma de marketplace C2C (Consumer-to-Consumer) desenvolvida em Next.js, projetada inicialmente como um MVP genérico de e-commerce e que evoluirá para atender especificamente agricultores familiares do Rio Grande do Sul, Brasil.
+O **SemeiaRS** é uma plataforma de marketplace C2C (Consumer-to-Consumer) desenvolvida em Next.js, projetada inicialmente como um MVP genérico de e-commerce e que evoluirá para atender especificamente agricultores familiares do Rio Grande do Sul, Brasil.
 
 ### ✨ Funcionalidades Atuais
 
@@ -49,7 +49,7 @@ O **SemeiRS** é uma plataforma de marketplace C2C (Consumer-to-Consumer) desenv
 
 ### Banco de Dados
 
-- **PostgreSQL** (Neon ou outro provedor)
+- **PostgreSQL**
 - **Prisma ORM** para modelagem e acesso
 
 ---
