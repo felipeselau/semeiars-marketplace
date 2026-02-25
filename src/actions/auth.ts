@@ -6,9 +6,9 @@ import { prisma } from '@/lib/prisma'
 import { revalidatePath } from 'next/cache'
 
 const registerSchema = z.object({
-  name: z.string().min(2, 'Name must be at least 2 characters'),
-  email: z.string().email('Invalid email address'),
-  password: z.string().min(6, 'Password must be at least 6 characters'),
+  name: z.string().min(2, 'O nome deve ter pelo menos 2 caracteres'),
+  email: z.string().email('Endereço de email inválido'),
+  password: z.string().min(6, 'A senha deve ter pelo menos 6 caracteres'),
   phone: z.string().optional(),
   address: z.string().optional(),
 })
@@ -30,7 +30,7 @@ export async function registerUser(formData: FormData) {
     })
 
     if (existingUser) {
-      return { error: 'Email already registered' }
+      return { error: 'Email já cadastrado' }
     }
 
     const hashedPassword = await hash(validated.password, 12)
@@ -51,13 +51,13 @@ export async function registerUser(formData: FormData) {
     if (error instanceof z.ZodError) {
       return { error: error.issues[0].message }
     }
-    return { error: 'Failed to register user' }
+    return { error: 'Falha ao cadastrar usuário' }
   }
 }
 
 const profileSchema = z.object({
-  name: z.string().min(2, 'Name must be at least 2 characters'),
-  email: z.string().email('Invalid email address'),
+  name: z.string().min(2, 'O nome deve ter pelo menos 2 caracteres'),
+  email: z.string().email('Endereço de email inválido'),
   phone: z.string().optional(),
   address: z.string().optional(),
   role: z.enum(['BUYER', 'SELLER']).optional(),
@@ -92,6 +92,6 @@ export async function updateProfile(userId: string, formData: FormData) {
     if (error instanceof z.ZodError) {
       return { error: error.issues[0].message }
     }
-    return { error: 'Failed to update profile' }
+    return { error: 'Falha ao atualizar perfil' }
   }
 }

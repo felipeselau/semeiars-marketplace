@@ -5,11 +5,11 @@ import { prisma } from '@/lib/prisma'
 import { revalidatePath } from 'next/cache'
 
 const productSchema = z.object({
-  name: z.string().min(1, 'Name is required'),
+  name: z.string().min(1, 'Nome é obrigatório'),
   description: z.string().optional(),
-  basePrice: z.coerce.number().positive('Price must be positive'),
-  currentPrice: z.coerce.number().positive('Price must be positive'),
-  quantity: z.coerce.number().int().min(0, 'Quantity must be 0 or more'),
+  basePrice: z.coerce.number().positive('O preço deve ser positivo'),
+  currentPrice: z.coerce.number().positive('O preço deve ser positivo'),
+  quantity: z.coerce.number().int().min(0, 'A quantidade deve ser 0 ou mais'),
   categoryId: z.string().optional(),
   imageUrl: z.string().url().optional().or(z.literal('')),
 })
@@ -42,7 +42,7 @@ export async function createProduct(sellerId: string, formData: FormData) {
     if (error instanceof z.ZodError) {
       return { error: error.issues[0].message }
     }
-    return { error: 'Failed to create product' }
+    return { error: 'Falha ao criar produto' }
   }
 }
 
@@ -64,7 +64,7 @@ export async function updateProduct(productId: string, sellerId: string, formDat
   })
 
   if (!product || product.sellerId !== sellerId) {
-    return { error: 'Not authorized to update this product' }
+    return { error: 'Não autorizado a atualizar este produto' }
   }
 
   await prisma.product.update({
@@ -86,7 +86,7 @@ export async function deleteProduct(productId: string, sellerId: string) {
   })
 
   if (!product || product.sellerId !== sellerId) {
-    return { error: 'Not authorized to delete this product' }
+    return { error: 'Não autorizado a excluir este produto' }
   }
 
   await prisma.product.delete({

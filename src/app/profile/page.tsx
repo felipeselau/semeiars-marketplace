@@ -2,6 +2,7 @@ import { auth } from '@/lib/auth'
 import { getProductsBySeller } from '@/actions/product'
 import { redirect } from 'next/navigation'
 import { ProfileClient } from './ProfileClient'
+import type { ProductWithCategory } from '@/types/database'
 
 export default async function ProfilePage() {
   const session = await auth()
@@ -10,7 +11,7 @@ export default async function ProfilePage() {
     redirect('/login')
   }
 
-  let products: any[] = []
+  let products: ProductWithCategory[] = []
   if (session.user.role === 'SELLER') {
     products = await getProductsBySeller(session.user.id)
   }

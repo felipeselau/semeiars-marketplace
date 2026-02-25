@@ -12,7 +12,7 @@ export async function createOrder(userId: string, items: { productId: string; qu
   })
 
   if (!cart || cart.items.length === 0) {
-    return { error: 'Cart is empty' }
+    return { error: 'Carrinho vazio' }
   }
 
   const order = await prisma.order.create({

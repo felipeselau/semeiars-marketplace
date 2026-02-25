@@ -1,0 +1,332 @@
+import { hash } from 'bcryptjs'
+import { Pool } from 'pg'
+import { PrismaClient } from '@prisma/client'
+import { PrismaPg } from '@prisma/adapter-pg'
+import 'dotenv/config'
+
+const connectionString = process.env.DATABASE_URL!
+const pool = new Pool({ connectionString })
+const adapter = new PrismaPg(pool)
+const prisma = new PrismaClient({ adapter })
+
+async function main() {
+  console.log('Iniciando seed...')
+
+  // Criar categorias agrícolas
+  const categories = await Promise.all([
+    prisma.category.upsert({
+      where: { name: 'Grãos e Cereais' },
+      update: {},
+      create: { name: 'Grãos e Cereais' },
+    }),
+    prisma.category.upsert({
+      where: { name: 'Hortifruti' },
+      update: {},
+      create: { name: 'Hortifruti' },
+    }),
+    prisma.category.upsert({
+      where: { name: 'Laticínios' },
+      update: {},
+      create: { name: 'Laticínios' },
+    }),
+    prisma.category.upsert({
+      where: { name: 'Carnes e Ovos' },
+      update: {},
+      create: { name: 'Carnes e Ovos' },
+    }),
+    prisma.category.upsert({
+      where: { name: 'Mudas e Sementes' },
+      update: {},
+      create: { name: 'Mudas e Sementes' },
+    }),
+    prisma.category.upsert({
+      where: { name: 'Equipamentos' },
+      update: {},
+      create: { name: 'Equipamentos' },
+    }),
+  ])
+
+  console.log('Categorias criadas:', categories.length)
+
+  // Criar vendedores (agricultores do RS)
+  const hashedPassword = await hash('senha123', 12)
+
+  const sellers = await Promise.all([
+    prisma.user.upsert({
+      where: { email: 'joao.silva@email.com' },
+      update: {},
+      create: {
+        name: 'João Carlos Silva',
+        email: 'joao.silva@email.com',
+        password: hashedPassword,
+        phone: '(51) 99999-0001',
+        address: 'Rua das Flores, 100 - Pelotas, RS',
+        role: 'SELLER',
+      },
+    }),
+    prisma.user.upsert({
+      where: { email: 'maria.santos@email.com' },
+      update: {},
+      create: {
+        name: 'Maria Helena Santos',
+        email: 'maria.santos@email.com',
+        password: hashedPassword,
+        phone: '(54) 99999-0002',
+        address: 'Av. Principal, 500 - Caxias do Sul, RS',
+        role: 'SELLER',
+      },
+    }),
+    prisma.user.upsert({
+      where: { email: 'pedro.oliveira@email.com' },
+      update: {},
+      create: {
+        name: 'Pedro Oliveira',
+        email: 'pedro.oliveira@email.com',
+        password: hashedPassword,
+        phone: '(53) 99999-0003',
+        address: 'Estrada do Campo, 200 - Bagé, RS',
+        role: 'SELLER',
+      },
+    }),
+    prisma.user.upsert({
+      where: { email: 'ana.ferreira@email.com' },
+      update: {},
+      create: {
+        name: 'Ana Paula Ferreira',
+        email: 'ana.ferreira@email.com',
+        password: hashedPassword,
+        phone: '(51) 99999-0004',
+        address: 'Rua dos Pássaros, 50 - Canela, RS',
+        role: 'SELLER',
+      },
+    }),
+  ])
+
+  console.log('Vendedores criados:', sellers.length)
+
+  // Criar produtos agrícolas
+  const products = await Promise.all([
+    // Produtos do João (Pelotas) - Grãos
+    prisma.product.create({
+      data: {
+        name: 'Arroz Integral Orgânico',
+        description: 'Arroz integral cultivado de forma sustentável na região de Pelotas. Rico em fibras e nutrientes.',
+        basePrice: 8.50,
+        currentPrice: 7.90,
+        quantity: 500,
+        imageUrl: 'https://images.unsplash.com/photo-1586201375761-83865001e31c?w=400',
+        sellerId: sellers[0].id,
+        categoryId: categories[0].id,
+      },
+    }),
+    prisma.product.create({
+      data: {
+        name: 'Feijão Preto Tipo 1',
+        description: 'Feijão preto de alta qualidade, plantado e colhido na região Sul.',
+        basePrice: 12.00,
+        currentPrice: 10.50,
+        quantity: 300,
+        imageUrl: 'https://images.unsplash.com/photo-1515543904323-de27c9fad2d7?w=400',
+        sellerId: sellers[0].id,
+        categoryId: categories[0].id,
+      },
+    }),
+    prisma.product.create({
+      data: {
+        name: 'Trigo Branco',
+        description: 'Trigo branco de excelente qualidade para moinho.',
+        basePrice: 2.80,
+        currentPrice: 2.50,
+        quantity: 2000,
+        imageUrl: 'https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?w=400',
+        sellerId: sellers[0].id,
+        categoryId: categories[0].id,
+      },
+    }),
+
+    // Produtos da Maria (Caxias do Sul) - Hortifruti
+    prisma.product.create({
+      data: {
+        name: 'Maçã Fuji Orgânica',
+        description: 'Maçãs Fuji frescas, cultivadas sem agrotóxicos na Serra Gaúcha.',
+        basePrice: 15.00,
+        currentPrice: 13.90,
+        quantity: 200,
+        imageUrl: 'https://images.unsplash.com/photo-1560806887-1e4cd0b6cbd6?w=400',
+        sellerId: sellers[1].id,
+        categoryId: categories[1].id,
+      },
+    }),
+    prisma.product.create({
+      data: {
+        name: 'Uva Niagara',
+        description: 'Uvas Niagara frescas, direto da vineyard na Serra do RS.',
+        basePrice: 18.00,
+        currentPrice: 16.50,
+        quantity: 150,
+        imageUrl: 'https://images.unsplash.com/photo-1537640538966-79f369143f8f?w=400',
+        sellerId: sellers[1].id,
+        categoryId: categories[1].id,
+      },
+    }),
+    prisma.product.create({
+      data: {
+        name: 'Alface Americana',
+        description: 'Alface americana crocante, cultivada em estufa.',
+        basePrice: 4.50,
+        currentPrice: 3.90,
+        quantity: 100,
+        imageUrl: 'https://images.unsplash.com/photo-1622206151226-18ca2c9ab4a1?w=400',
+        sellerId: sellers[1].id,
+        categoryId: categories[1].id,
+      },
+    }),
+    prisma.product.create({
+      data: {
+        name: 'Tomate Cereja',
+        description: 'Tomate cereja doce e suculento.',
+        basePrice: 8.00,
+        currentPrice: 7.20,
+        quantity: 80,
+        imageUrl: 'https://images.unsplash.com/photo-1546470427-227c7b3f8fc2?w=400',
+        sellerId: sellers[1].id,
+        categoryId: categories[1].id,
+      },
+    }),
+
+    // Produtos do Pedro (Bagé) - Laticínios e Carnes
+    prisma.product.create({
+      data: {
+        name: 'Queijo Artesanal Colonial',
+        description: 'Queijo colonial feito com leite fresco de nossas próprias vacas.',
+        basePrice: 45.00,
+        currentPrice: 42.00,
+        quantity: 50,
+        imageUrl: 'https://images.unsplash.com/photo-1486297678162-eb2a19b0a32d?w=400',
+        sellerId: sellers[2].id,
+        categoryId: categories[2].id,
+      },
+    }),
+    prisma.product.create({
+      data: {
+        name: 'Leite Fresco Natural',
+        description: 'Leite fresco pasteurizado, sem conservantes.',
+        basePrice: 6.50,
+        currentPrice: 5.90,
+        quantity: 100,
+        imageUrl: 'https://images.unsplash.com/photo-1563636619-e9143da7973b?w=400',
+        sellerId: sellers[2].id,
+        categoryId: categories[2].id,
+      },
+    }),
+    prisma.product.create({
+      data: {
+        name: 'Ovos de Galinha Caipira',
+        description: 'Ovos de galinhas criadas soltas, alimentação natural.',
+        basePrice: 12.00,
+        currentPrice: 10.90,
+        quantity: 200,
+        imageUrl: 'https://images.unsplash.com/photo-1582722872445-44dc5f7e3c8f?w=400',
+        sellerId: sellers[2].id,
+        categoryId: categories[3].id,
+      },
+    }),
+    prisma.product.create({
+      data: {
+        name: 'Mel Silvestre Puro',
+        description: 'Mel puro de abelhas silvestres da Campanha Gaúcha.',
+        basePrice: 35.00,
+        currentPrice: 32.00,
+        quantity: 40,
+        imageUrl: 'https://images.unsplash.com/photo-1587049352846-4a222e784d38?w=400',
+        sellerId: sellers[2].id,
+        categoryId: categories[1].id,
+      },
+    }),
+
+    // Produtos da Ana (Canela) - Mudas e Sementes
+    prisma.product.create({
+      data: {
+        name: 'Muda de Videira',
+        description: 'Mudas de videira para uva, variedade Niágara e Isabel.',
+        basePrice: 15.00,
+        currentPrice: 12.90,
+        quantity: 100,
+        imageUrl: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400',
+        sellerId: sellers[3].id,
+        categoryId: categories[4].id,
+      },
+    }),
+    prisma.product.create({
+      data: {
+        name: 'Semente de Grama Bermuda',
+        description: 'Sementes de grama Bermuda para pastagem.',
+        basePrice: 25.00,
+        currentPrice: 22.50,
+        quantity: 60,
+        imageUrl: 'https://images.unsplash.com/photo-1592419044706-39796d40f98c?w=400',
+        sellerId: sellers[3].id,
+        categoryId: categories[4].id,
+      },
+    }),
+    prisma.product.create({
+      data: {
+        name: 'Muda de Macieira',
+        description: 'Mudas de macieira variedade Fuji e Gala.',
+        basePrice: 45.00,
+        currentPrice: 40.00,
+        quantity: 30,
+        imageUrl: 'https://images.unsplash.com/photo-1567306295427-94503f8300d7?w=400',
+        sellerId: sellers[3].id,
+        categoryId: categories[4].id,
+      },
+    }),
+    prisma.product.create({
+      data: {
+        name: 'Semente de Soja',
+        description: 'Sementes de soja transgênica variedade bm310.',
+        basePrice: 180.00,
+        currentPrice: 165.00,
+        quantity: 20,
+        imageUrl: 'https://images.unsplash.com/photo-1620574387735-3624d75b2dbc?w=400',
+        sellerId: sellers[3].id,
+        categoryId: categories[4].id,
+      },
+    }),
+  ])
+
+  console.log('Produtos criados:', products.length)
+
+  // Criar comprador de teste
+  const buyer = await prisma.user.upsert({
+    where: { email: 'comprador@email.com' },
+    update: {},
+    create: {
+      name: 'Comprador Teste',
+      email: 'comprador@email.com',
+      password: hashedPassword,
+      phone: '(51) 99999-9999',
+      address: 'Av. Borges de Medeiros, 1000 - Porto Alegre, RS',
+      role: 'BUYER',
+    },
+  })
+
+  // Criar carrinho para o comprador
+  await prisma.cart.upsert({
+    where: { userId: buyer.id },
+    update: {},
+    create: { userId: buyer.id },
+  })
+
+  console.log('Comprador de teste criado:', buyer.email)
+  console.log('Seed concluído com sucesso!')
+}
+
+main()
+  .catch((e) => {
+    console.error('Erro ao executar seed:', e)
+    process.exit(1)
+  })
+  .finally(async () => {
+    await prisma.$disconnect()
+  })

@@ -4,21 +4,24 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { updateCartItemQuantity, removeFromCart } from '@/actions/cart'
 import { createOrder } from '@/actions/order'
-import { Trash2, Minus, Plus, ShoppingBag } from 'lucide-react'
+import { Trash2, Minus, Plus, ShoppingBag, ArrowRight } from 'lucide-react'
+import { getMessage } from '@/lib/messages'
 
-export function CartClient({ cart, userId }: { cart: any; userId: string }) {
+import type { CartWithItems, CartItemWithProduct } from '@/types/database'
+
+export function CartClient({ cart, userId }: { cart: CartWithItems; userId: string }) {
   const router = useRouter()
   const [cartData, setCartData] = useState(cart)
   const [checkingOut, setCheckingOut] = useState(false)
 
   async function handleUpdateQuantity(itemId: string, quantity: number) {
     await updateCartItemQuantity(itemId, quantity)
-    const newItems = cartData.items.map((item: any) => {
+    const newItems = cartData.items.map((item: CartItemWithProduct) => {
       if (item.id === itemId) {
         return { ...item, quantity }
       }
       return item
-    }).filter((item: any) => item.quantity > 0)
+    }).filter((item: CartItemWithProduct) => item.quantity > 0)
     setCartData({ ...cartData, items: newItems })
   }
 
@@ -26,13 +29,13 @@ export function CartClient({ cart, userId }: { cart: any; userId: string }) {
     await removeFromCart(itemId)
     setCartData({
       ...cartData,
-      items: cartData.items.filter((item: any) => item.id !== itemId)
+      items: cartData.items.filter((item: CartItemWithProduct) => item.id !== itemId)
     })
   }
 
   async function handleCheckout() {
     setCheckingOut(true)
-    const items = cartData.items.map((item: any) => ({
+    const items = cartData.items.map((item: CartItemWithProduct) => ({
       productId: item.productId,
       quantity: item.quantity,
       price: item.product.currentPrice,
@@ -47,68 +50,77 @@ export function CartClient({ cart, userId }: { cart: any; userId: string }) {
   }
 
   const total = cartData?.items.reduce(
-    (sum: number, item: any) => sum + item.product.currentPrice * item.quantity,
+    (sum: number, item: CartItemWithProduct) => sum + item.product.currentPrice * item.quantity,
     0
   ) || 0
 
   return (
     <div>
-      <h1 className="text-2xl font-bold mb-6">Shopping Cart</h1>
+      <h1 className="text-3xl font-bold mb-8">{getMessage('cart.title')}</h1>
 
       {!cartData || cartData.items.length === 0 ? (
-        <div className="text-center py-12">
-          <ShoppingBag className="w-12 h-12 mx-auto mb-4 text-muted-foreground" />
-          <p className="text-muted-foreground mb-4">Your cart is empty</p>
+        <div className="text-center py-16 bg-card rounded-xl border">
+          <ShoppingBag className="w-16 h-16 mx-auto mb-4 text-muted-foreground" />
+          <p className="text-muted-foreground text-lg mb-6">{getMessage('cart.empty')}</p>
+          <a
+            href="/products"
+            className="inline-flex items-center gap-2 text-primary hover:underline"
+          >
+            Ver produtos <ArrowRight className="w-4 h-4" />
+          </a>
         </div>
       ) : (
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div className="grid lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2 space-y-4">
-            {cartData.items.map((item: any) => (
-              <div key={item.id} className="flex gap-4 p-4 border rounded-lg">
-                {item.product.imageUrl ? (
-                  <img
-                    src={item.product.imageUrl}
-                    alt={item.product.name}
-                    className="w-24 h-24 object-cover rounded"
-                  />
-                ) : (
-                  <div className="w-24 h-24 bg-muted rounded flex items-center justify-center">
-                    <span className="text-xs text-muted-foreground">No Image</span>
-                  </div>
-                )}
-                <div className="flex-1">
-                  <h3 className="font-semibold">{item.product.name}</h3>
-                  <p className="text-sm text-muted-foreground">
-                    Seller: {item.product.seller.name}
+            {cartData.items.map((item: CartItemWithProduct) => (
+              <div key={item.id} className="flex gap-4 p-4 bg-card rounded-xl border">
+                <div className="w-24 h-24 rounded-lg overflow-hidden bg-muted flex-shrink-0">
+                  {item.product.imageUrl ? (
+                    <img
+                      src={item.product.imageUrl}
+                      alt={item.product.name}
+                      className="object-cover w-full h-full"
+                    />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center">
+                      <span className="text-xs text-muted-foreground">Sem Imagem</span>
+                    </div>
+                  )}
+                </div>
+                <div className="flex-1 min-w-0">
+                  <h3 className="font-semibold truncate">{item.product.name}</h3>
+                  <p className="text-sm text-muted-foreground truncate">
+                    {item.product.seller.name}
                   </p>
-                  <p className="text-primary font-bold mt-1">
-                    ${item.product.currentPrice.toFixed(2)}
+                  <p className="text-primary font-bold mt-2">
+                    R$ {item.product.currentPrice.toFixed(2).replace('.', ',')}
                   </p>
                 </div>
-                <div className="flex flex-col items-end gap-2">
+                <div className="flex flex-col items-end gap-3">
                   <button
                     onClick={() => handleRemoveItem(item.id)}
-                    className="p-1 text-muted-foreground hover:text-destructive"
+                    className="p-2 text-muted-foreground hover:text-destructive transition-colors"
+                    title={getMessage('cart.remove')}
                   >
-                    <Trash2 className="w-4 h-4" />
+                    <Trash2 className="w-5 h-5" />
                   </button>
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-2 bg-muted rounded-lg p-1">
                     <button
                       onClick={() => handleUpdateQuantity(item.id, item.quantity - 1)}
-                      className="p-1 border rounded hover:bg-accent"
+                      className="p-1 hover:bg-background rounded transition-colors"
                     >
                       <Minus className="w-4 h-4" />
                     </button>
-                    <span className="w-8 text-center">{item.quantity}</span>
+                    <span className="w-8 text-center font-medium">{item.quantity}</span>
                     <button
                       onClick={() => handleUpdateQuantity(item.id, item.quantity + 1)}
-                      className="p-1 border rounded hover:bg-accent"
+                      className="p-1 hover:bg-background rounded transition-colors"
                     >
                       <Plus className="w-4 h-4" />
                     </button>
                   </div>
-                  <p className="font-semibold">
-                    ${(item.product.currentPrice * item.quantity).toFixed(2)}
+                  <p className="font-bold">
+                    R$ {(item.product.currentPrice * item.quantity).toFixed(2).replace('.', ',')}
                   </p>
                 </div>
               </div>
@@ -116,24 +128,29 @@ export function CartClient({ cart, userId }: { cart: any; userId: string }) {
           </div>
 
           <div className="lg:col-span-1">
-            <div className="border rounded-lg p-6 sticky top-4">
-              <h2 className="text-lg font-semibold mb-4">Order Summary</h2>
-              <div className="space-y-2 mb-4">
+            <div className="bg-card rounded-xl border p-6 sticky top-4">
+              <h2 className="text-lg font-semibold mb-4">{getMessage('checkout.title')}</h2>
+              <div className="space-y-3 mb-4">
                 <div className="flex justify-between">
-                  <span>Subtotal ({cartData.items.length} items)</span>
-                  <span>${total.toFixed(2)}</span>
+                  <span className="text-muted-foreground">{getMessage('cart.subtotal')}</span>
+                  <span>R$ {total.toFixed(2).replace('.', ',')}</span>
                 </div>
-                <div className="flex justify-between text-lg font-bold pt-2 border-t">
-                  <span>Total</span>
-                  <span>${total.toFixed(2)}</span>
+                <div className="flex justify-between">
+                  <span className="text-muted-foreground">Frete</span>
+                  <span>A combinar</span>
+                </div>
+                <div className="border-t pt-3 flex justify-between text-lg font-bold">
+                  <span>{getMessage('cart.total')}</span>
+                  <span className="text-primary">R$ {total.toFixed(2).replace('.', ',')}</span>
                 </div>
               </div>
               <button
                 onClick={handleCheckout}
                 disabled={checkingOut}
-                className="w-full bg-primary text-primary-foreground py-3 rounded-md hover:bg-primary/90 disabled:opacity-50"
+                className="w-full bg-primary text-primary-foreground py-3 rounded-lg hover:bg-primary/90 transition-colors disabled:opacity-50 flex items-center justify-center gap-2 font-medium"
               >
-                {checkingOut ? 'Processing...' : 'Checkout'}
+                {checkingOut ? 'Processando...' : getMessage('cart.checkout')}
+                {!checkingOut && <ArrowRight className="w-5 h-5" />}
               </button>
             </div>
           </div>

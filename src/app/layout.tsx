@@ -1,13 +1,11 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
-
-const inter = Inter({ subsets: ["latin"] });
+import { getMessage } from "@/lib/messages";
 
 export const metadata: Metadata = {
-  title: "Semeiars - C2C E-commerce Platform",
-  description: "Consumer-to-Consumer e-commerce platform",
+  title: `${getMessage('brand.name')} - ${getMessage('brand.slogan')}`,
+  description: getMessage('brand.tagline'),
 };
 
 export default function RootLayout({
@@ -16,12 +14,22 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={inter.className}>
+    <html lang="pt-br">
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+      </head>
+      <body className="font-body min-h-screen flex flex-col">
         <Navbar />
-        <main className="container mx-auto px-4 py-8">
+        <main className="flex-1 container mx-auto px-4 py-8">
           {children}
         </main>
+        <footer className="border-t py-6 mt-auto">
+          <div className="container mx-auto px-4 text-center text-sm text-muted-foreground">
+            <p>{getMessage('brand.name')} © {new Date().getFullYear()} - {getMessage('footer.rights')}</p>
+          </div>
+        </footer>
       </body>
     </html>
   );
