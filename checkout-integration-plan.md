@@ -35,12 +35,12 @@ Pedido: R$ 200,00 (2 vendedores)
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
-│                        SemeiaRS Backend                           │
-│  ┌──────────────┐   ┌──────────────┐   ┌──────────────────┐   │
-│  │  Checkout    │   │  Webhook     │   │  Rotina Split    │   │
-│  │  AbacatePay  │──▶│  AbacatePay   │──▶│  + Payout        │   │
-│  └──────────────┘   └──────────────┘   │  PagSeguro      │   │
-│                                          └──────────────────┘   │
+│                        SemeiaRS Backend                         │
+│  ┌──────────────┐   ┌──────────────┐   ┌──────────────────┐     │
+│  │  Checkout    │   │  Webhook     │   │  Rotina Split    │     │
+│  │  AbacatePay  │──▶│  AbacatePay  │──▶│  + Payout        │     │
+│  └──────────────┘   └──────────────┘   │  PagSeguro       │     │
+│                                        └──────────────────┘     │
 └─────────────────────────────────────────────────────────────────┘
          │                      │                    │
          ▼                      ▼                    ▼
@@ -367,9 +367,3 @@ POST /payouts
 - **Usuário paga uma vez**
 - **Vendedores recebem automaticamente**
 - **Marketplace controla comissão**
-
-Esta arquitetura é:
-- Barata
-- Escalável
-- Compatível com MVP
-- Comum em marketplaces early-stage
