@@ -22,30 +22,37 @@ export async function registerUser(formData: FormData) {
     address: formData.get('address') || undefined,
   }
 
-  const validated = registerSchema.parse(data)
+  try {
+    const validated = registerSchema.parse(data)
 
-  const existingUser = await prisma.user.findUnique({
-    where: { email: validated.email },
-  })
+    const existingUser = await prisma.user.findUnique({
+      where: { email: validated.email },
+    })
 
-  if (existingUser) {
-    return { error: 'Email already registered' }
+    if (existingUser) {
+      return { error: 'Email already registered' }
+    }
+
+    const hashedPassword = await hash(validated.password, 12)
+
+    await prisma.user.create({
+      data: {
+        name: validated.name,
+        email: validated.email,
+        password: hashedPassword,
+        phone: validated.phone,
+        address: validated.address,
+      },
+    })
+
+    revalidatePath('/login')
+    return { success: true }
+  } catch (error) {
+    if (error instanceof z.ZodError) {
+      return { error: error.issues[0].message }
+    }
+    return { error: 'Failed to register user' }
   }
-
-  const hashedPassword = await hash(validated.password, 12)
-
-  await prisma.user.create({
-    data: {
-      name: validated.name,
-      email: validated.email,
-      password: hashedPassword,
-      phone: validated.phone,
-      address: validated.address,
-    },
-  })
-
-  revalidatePath('/login')
-  return { success: true }
 }
 
 const profileSchema = z.object({
@@ -65,19 +72,26 @@ export async function updateProfile(userId: string, formData: FormData) {
     role: formData.get('role') || undefined,
   }
 
-  const validated = profileSchema.parse(data)
+  try {
+    const validated = profileSchema.parse(data)
 
-  await prisma.user.update({
-    where: { id: userId },
-    data: {
-      name: validated.name,
-      email: validated.email,
-      phone: validated.phone,
-      address: validated.address,
-      role: validated.role,
-    },
-  })
+    await prisma.user.update({
+      where: { id: userId },
+      data: {
+        name: validated.name,
+        email: validated.email,
+        phone: validated.phone,
+        address: validated.address,
+        role: validated.role,
+      },
+    })
 
-  revalidatePath('/profile')
-  return { success: true }
+    revalidatePath('/profile')
+    return { success: true }
+  } catch (error) {
+    if (error instanceof z.ZodError) {
+      return { error: error.issues[0].message }
+    }
+    return { error: 'Failed to update profile' }
+  }
 }

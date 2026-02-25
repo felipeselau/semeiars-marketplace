@@ -25,18 +25,25 @@ export async function createProduct(sellerId: string, formData: FormData) {
     imageUrl: formData.get('imageUrl') || undefined,
   }
 
-  const validated = productSchema.parse(data)
+  try {
+    const validated = productSchema.parse(data)
 
-  await prisma.product.create({
-    data: {
-      ...validated,
-      sellerId,
-      imageUrl: validated.imageUrl || null,
-    },
-  })
+    await prisma.product.create({
+      data: {
+        ...validated,
+        sellerId,
+        imageUrl: validated.imageUrl || null,
+      },
+    })
 
-  revalidatePath('/products')
-  return { success: true }
+    revalidatePath('/products')
+    return { success: true }
+  } catch (error) {
+    if (error instanceof z.ZodError) {
+      return { error: error.issues[0].message }
+    }
+    return { error: 'Failed to create product' }
+  }
 }
 
 export async function updateProduct(productId: string, sellerId: string, formData: FormData) {

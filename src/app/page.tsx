@@ -37,7 +37,7 @@ export default async function HomePage() {
           <p className="text-muted-foreground">No products available yet.</p>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {products.slice(0, 8).map((product) => (
+            {products.slice(0, 8).map((product: any) => (
               <Link
                 key={product.id}
                 href={`/products/${product.id}`}

@@ -31,7 +31,7 @@ export default async function ProductsPage({
           className="px-3 py-2 border rounded-md"
         >
           <option value="">All Categories</option>
-          {categories.map((category) => (
+          {categories.map((category: any) => (
             <option key={category.id} value={category.id}>
               {category.name}
             </option>
@@ -49,7 +49,7 @@ export default async function ProductsPage({
         <p className="text-muted-foreground">No products found.</p>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {products.map((product) => (
+          {products.map((product: any) => (
             <Link
               key={product.id}
               href={`/products/${product.id}`}
