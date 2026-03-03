@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
-import { useRouter } from 'next/navigation'
 import { ArrowLeft, Package, User, Calendar, FileText, Check, Clock, Truck, CheckCircle, XCircle } from 'lucide-react'
 import { getMessage } from '@/lib/messages'
 import { updateSellerOrderStatus, updateSellerOrderNote, updatePickupInstructions } from '@/actions/order'
@@ -58,7 +57,6 @@ interface SellerOrderData {
 }
 
 export default function SellerOrderDetailPage({ params }: Props) {
-  const router = useRouter()
   const [orderData, setOrderData] = useState<SellerOrderData | null>(null)
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)

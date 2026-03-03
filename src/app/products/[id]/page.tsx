@@ -1,7 +1,7 @@
 import { getProductById } from '@/actions/product'
 import { auth } from '@/lib/auth'
 import { AddToCartButton } from './AddToCartButton'
-import { Store, ArrowLeft, MapPin } from 'lucide-react'
+import { Store, ArrowLeft } from 'lucide-react'
 import Link from 'next/link'
 import { getMessage } from '@/lib/messages'
 

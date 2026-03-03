@@ -53,8 +53,8 @@
   --color-warm-yellow: var(--warm-yellow);
   --color-warm-yellow-foreground: var(--warm-yellow-foreground);
   --color-sand: var(--sand);
-  --font-heading: 'Poppins', sans-serif;
-  --font-body: 'Inter', sans-serif;
+  --font-heading: var(--font-poppins), sans-serif;
+  --font-body: var(--font-inter), sans-serif;
   --radius-sm: calc(var(--radius) - 0.25rem);
   --radius-md: calc(var(--radius));
   --radius-lg: calc(var(--radius) + 0.25rem);

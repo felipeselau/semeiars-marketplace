@@ -1,7 +1,7 @@
 import { auth } from '@/lib/auth'
 import { redirect } from 'next/navigation'
 import Link from 'next/link'
-import { Package, ArrowRight, Inbox } from 'lucide-react'
+import { ArrowRight, Inbox } from 'lucide-react'
 import { getMessage } from '@/lib/messages'
 import { getSellerOrders, getSellerOrderCounts } from '@/actions/order'
 

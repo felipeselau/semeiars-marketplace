@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { updateCartItemQuantity, removeFromCart } from '@/actions/cart'
 import { createOrder } from '@/actions/order'
@@ -62,12 +63,12 @@ export function CartClient({ cart, userId }: { cart: CartWithItems; userId: stri
         <div className="text-center py-16 bg-card rounded-xl border">
           <ShoppingBag className="w-16 h-16 mx-auto mb-4 text-muted-foreground" />
           <p className="text-muted-foreground text-lg mb-6">{getMessage('cart.empty')}</p>
-          <a
+          <Link
             href="/products"
             className="inline-flex items-center gap-2 text-primary hover:underline"
           >
             Ver produtos <ArrowRight className="w-4 h-4" />
-          </a>
+          </Link>
         </div>
       ) : (
         <div className="grid lg:grid-cols-3 gap-8">

@@ -186,8 +186,6 @@ export const messages = {
   }
 }
 
-type MessageKey = keyof typeof messages
-
 export function t(key: string): string {
   const keys = key.split('.')
   let result: unknown = messages
