@@ -57,27 +57,34 @@ export async function updateProduct(productId: string, sellerId: string, formDat
     imageUrl: formData.get('imageUrl') || undefined,
   }
 
-  const validated = productSchema.parse(data)
+  try {
+    const validated = productSchema.parse(data)
 
-  const product = await prisma.product.findUnique({
-    where: { id: productId },
-  })
+    const product = await prisma.product.findUnique({
+      where: { id: productId },
+    })
 
-  if (!product || product.sellerId !== sellerId) {
-    return { error: 'Não autorizado a atualizar este produto' }
+    if (!product || product.sellerId !== sellerId) {
+      return { error: 'Não autorizado a atualizar este produto' }
+    }
+
+    await prisma.product.update({
+      where: { id: productId },
+      data: {
+        ...validated,
+        imageUrl: validated.imageUrl || null,
+      },
+    })
+
+    revalidatePath('/products')
+    revalidatePath(`/products/${productId}`)
+    return { success: true }
+  } catch (error) {
+    if (error instanceof z.ZodError) {
+      return { error: error.issues[0].message }
+    }
+    return { error: 'Falha ao atualizar produto' }
   }
-
-  await prisma.product.update({
-    where: { id: productId },
-    data: {
-      ...validated,
-      imageUrl: validated.imageUrl || null,
-    },
-  })
-
-  revalidatePath('/products')
-  revalidatePath(`/products/${productId}`)
-  return { success: true }
 }
 
 export async function deleteProduct(productId: string, sellerId: string) {

@@ -26,6 +26,7 @@ const statusConfig: Record<string, { color: string; bg: string; icon: typeof Clo
 interface SellerOrderData {
   id: string
   orderId: string
+  sellerId: string
   status: OrderStatus
   note: string | null
   estimatedPickupDate: string | null
@@ -147,7 +148,7 @@ export default function SellerOrderDetailPage({ params }: Props) {
 
   // Calculate total for this seller's items
   const sellerItems = orderData.order.items.filter(
-    (item) => item.product.sellerId === orderData.id
+    (item) => item.product.sellerId === orderData.sellerId
   )
   const sellerTotal = sellerItems.reduce((sum, item) => sum + item.price * item.quantity, 0)
 
