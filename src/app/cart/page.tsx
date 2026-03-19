@@ -12,5 +12,5 @@ export default async function CartPage() {
 
   const cart = await getCart(session.user.id)
 
-  return <CartClient cart={cart} userId={session.user.id} />
+  return <CartClient cart={cart} />
 }

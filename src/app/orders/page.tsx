@@ -18,6 +18,10 @@ export default async function OrdersPage() {
   const statusConfig = {
     PENDING: { icon: Clock, color: 'text-yellow-600 bg-yellow-100', label: 'Pendente' },
     CONFIRMED: { icon: CheckCircle, color: 'text-green-600 bg-green-100', label: 'Confirmado' },
+    PREPARING: { icon: Clock, color: 'text-blue-600 bg-blue-100', label: 'Preparando' },
+    READY: { icon: CheckCircle, color: 'text-purple-600 bg-purple-100', label: 'Pronto' },
+    SHIPPED: { icon: Package, color: 'text-indigo-600 bg-indigo-100', label: 'Enviado' },
+    COMPLETED: { icon: CheckCircle, color: 'text-green-600 bg-green-100', label: 'Concluído' },
     CANCELLED: { icon: XCircle, color: 'text-red-600 bg-red-100', label: 'Cancelado' },
   }
 
@@ -39,7 +43,7 @@ export default async function OrdersPage() {
       ) : (
         <div className="space-y-6">
           {orders.map((order) => {
-            const status = statusConfig[order.status as keyof typeof statusConfig]
+            const status = statusConfig[order.status as keyof typeof statusConfig] || { icon: Clock, color: 'text-gray-600 bg-gray-100', label: order.status }
             const StatusIcon = status.icon
 
             return (

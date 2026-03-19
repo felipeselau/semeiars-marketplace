@@ -3,7 +3,6 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { createProduct } from '@/actions/product'
-import { getMessage } from '@/lib/messages'
 import { Package, ArrowLeft } from 'lucide-react'
 
 import type { Category } from '@/types/database'

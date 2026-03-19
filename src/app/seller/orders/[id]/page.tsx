@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
-import { useRouter } from 'next/navigation'
 import { ArrowLeft, Package, User, Calendar, FileText, Check, Clock, Truck, CheckCircle, XCircle } from 'lucide-react'
 import { getMessage } from '@/lib/messages'
 import { updateSellerOrderStatus, updateSellerOrderNote, updatePickupInstructions } from '@/actions/order'
@@ -27,6 +26,7 @@ const statusConfig: Record<string, { color: string; bg: string; icon: typeof Clo
 interface SellerOrderData {
   id: string
   orderId: string
+  sellerId: string
   status: OrderStatus
   note: string | null
   estimatedPickupDate: string | null
@@ -58,7 +58,6 @@ interface SellerOrderData {
 }
 
 export default function SellerOrderDetailPage({ params }: Props) {
-  const router = useRouter()
   const [orderData, setOrderData] = useState<SellerOrderData | null>(null)
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
@@ -149,7 +148,7 @@ export default function SellerOrderDetailPage({ params }: Props) {
 
   // Calculate total for this seller's items
   const sellerItems = orderData.order.items.filter(
-    (item) => item.product.sellerId === orderData.id
+    (item) => item.product.sellerId === orderData.sellerId
   )
   const sellerTotal = sellerItems.reduce((sum, item) => sum + item.price * item.quantity, 0)
 

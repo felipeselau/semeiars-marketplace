@@ -21,6 +21,35 @@ enum OrderStatus {
   CANCELLED
 }
 
+enum PaymentStatus {
+  PENDING
+  WAITING
+  CONFIRMED
+  FAILED
+}
+
+enum PaymentSplitStatus {
+  PENDING
+  PROCESSING
+  SENT
+  SUCCESS
+  FAILED
+}
+
+enum PayoutStatus {
+  PENDING
+  PROCESSING
+  SUCCESS
+  FAILED
+}
+
+enum PixKeyType {
+  CPF
+  CNPJ
+  EMAIL
+  TELEFONE
+}
+
 model User {
   id        String    @id @default(cuid())
   name      String
@@ -32,10 +61,12 @@ model User {
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
 
-  products    Product[]
-  orders      Order[]
-  cart        Cart?
-  sellerOrders SellerOrder[]
+  products      Product[]
+  orders        Order[]
+  cart          Cart?
+  sellerOrders  SellerOrder[]
+  sellerPayment SellerPayment?
+  payouts       Payout[]
 }
 
 model Category {
@@ -78,6 +109,7 @@ model Order {
 
   items       OrderItem[]
   sellerOrders SellerOrder[]
+  payment     Payment?
 }
 
 model OrderItem {
@@ -131,4 +163,67 @@ model SellerOrder {
   updatedAt          DateTime    @updatedAt
 
   @@unique([orderId, sellerId])
+}
+
+model SellerPayment {
+  id              String      @id @default(cuid())
+  sellerId        String      @unique
+  seller          User        @relation(fields: [sellerId], references: [id], onDelete: Cascade)
+  cpfCnpj         String
+  pixKey          String
+  pixKeyType      PixKeyType
+  pixBank         String?
+  isVerified      Boolean     @default(false)
+  isActive        Boolean     @default(true)
+  termsAccepted   Boolean     @default(false)
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+}
+
+model Payment {
+  id              String        @id @default(cuid())
+  orderId         String        @unique
+  order           Order         @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  buyerId         String
+  abacatePayId   String?
+  amount          Float
+  status          PaymentStatus @default(PENDING)
+  pixCopyPaste   String?
+  pixQrCode       String?
+  paymentUrl      String?
+  paidAt          DateTime?
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+
+  splits          PaymentSplit[]
+}
+
+model PaymentSplit {
+  id            String            @id @default(cuid())
+  paymentId     String
+  payment       Payment           @relation(fields: [paymentId], references: [id], onDelete: Cascade)
+  sellerId      String
+  grossAmount   Float
+  commission    Float
+  netAmount     Float
+  payoutId      String?
+  payoutStatus  PaymentSplitStatus?
+  paidAt        DateTime?
+  createdAt     DateTime          @default(now())
+
+  payout        Payout?
+}
+
+model Payout {
+  id              String        @id @default(cuid())
+  sellerId        String
+  seller          User          @relation(fields: [sellerId], references: [id])
+  paymentSplitId  String        @unique
+  paymentSplit    PaymentSplit  @relation(fields: [paymentSplitId], references: [id], onDelete: Cascade)
+  amount          Float
+  pagseguroId    String?
+  status         PayoutStatus  @default(PENDING)
+  errorMessage    String?
+  processedAt     DateTime?
+  createdAt       DateTime      @default(now())
 }

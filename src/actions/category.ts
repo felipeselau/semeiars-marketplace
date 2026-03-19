@@ -5,7 +5,7 @@ import { prisma } from '@/lib/prisma'
 import { revalidatePath } from 'next/cache'
 
 const categorySchema = z.object({
-  name: z.string().min(1, 'Name is required'),
+  name: z.string().min(1, 'Nome é obrigatório'),
 })
 
 export async function createCategory(formData: FormData) {
@@ -13,22 +13,29 @@ export async function createCategory(formData: FormData) {
     name: formData.get('name'),
   }
 
-  const validated = categorySchema.parse(data)
+  try {
+    const validated = categorySchema.parse(data)
 
-  const existing = await prisma.category.findUnique({
-    where: { name: validated.name },
-  })
+    const existing = await prisma.category.findUnique({
+      where: { name: validated.name },
+    })
 
-  if (existing) {
-    return { error: 'Category already exists' }
+    if (existing) {
+      return { error: 'Categoria já existe' }
+    }
+
+    await prisma.category.create({
+      data: validated,
+    })
+
+    revalidatePath('/products')
+    return { success: true }
+  } catch (error) {
+    if (error instanceof z.ZodError) {
+      return { error: error.issues[0].message }
+    }
+    return { error: 'Falha ao criar categoria' }
   }
-
-  await prisma.category.create({
-    data: validated,
-  })
-
-  revalidatePath('/products')
-  return { success: true }
 }
 
 export async function getCategories() {
