@@ -12,6 +12,22 @@ const prisma = new PrismaClient({ adapter })
 async function main() {
   console.log('Iniciando seed...')
 
+  // Limpar dados existentes (ordem respeitando foreign keys)
+  console.log('Limpando dados existentes...')
+  await prisma.payout.deleteMany()
+  await prisma.paymentSplit.deleteMany()
+  await prisma.payment.deleteMany()
+  await prisma.sellerOrder.deleteMany()
+  await prisma.orderItem.deleteMany()
+  await prisma.order.deleteMany()
+  await prisma.cartItem.deleteMany()
+  await prisma.cart.deleteMany()
+  await prisma.sellerPayment.deleteMany()
+  await prisma.product.deleteMany()
+  await prisma.category.deleteMany()
+  await prisma.user.deleteMany()
+  console.log('Dados limpos.')
+
   // Criar categorias agrícolas
   const categories = await Promise.all([
     prisma.category.upsert({
@@ -319,6 +335,262 @@ async function main() {
   })
 
   console.log('Comprador de teste criado:', buyer.email)
+
+  // Criar configurações de pagamento PIX para vendedores
+  const pixSettings = await Promise.all([
+    prisma.sellerPayment.upsert({
+      where: { sellerId: sellers[0].id },
+      update: {},
+      create: {
+        sellerId: sellers[0].id,
+        cpfCnpj: '12345678901',
+        pixKey: 'encrypted:joao.silva@email.com',
+        pixKeyType: 'EMAIL',
+        pixBank: 'Banrisul',
+        isActive: true,
+        isVerified: false,
+        termsAccepted: true,
+      },
+    }),
+    prisma.sellerPayment.upsert({
+      where: { sellerId: sellers[1].id },
+      update: {},
+      create: {
+        sellerId: sellers[1].id,
+        cpfCnpj: '98765432100',
+        pixKey: 'encrypted:maria.santos@email.com',
+        pixKeyType: 'EMAIL',
+        pixBank: 'Sicredi',
+        isActive: true,
+        isVerified: false,
+        termsAccepted: true,
+      },
+    }),
+    prisma.sellerPayment.upsert({
+      where: { sellerId: sellers[2].id },
+      update: {},
+      create: {
+        sellerId: sellers[2].id,
+        cpfCnpj: '45678912300',
+        pixKey: 'encrypted:pedro.oliveira@email.com',
+        pixKeyType: 'EMAIL',
+        pixBank: 'Bradesco',
+        isActive: true,
+        isVerified: false,
+        termsAccepted: true,
+      },
+    }),
+    prisma.sellerPayment.upsert({
+      where: { sellerId: sellers[3].id },
+      update: {},
+      create: {
+        sellerId: sellers[3].id,
+        cpfCnpj: '78912345600',
+        pixKey: 'encrypted:ana.ferreira@email.com',
+        pixKeyType: 'EMAIL',
+        pixBank: 'Itaú',
+        isActive: true,
+        isVerified: false,
+        termsAccepted: true,
+      },
+    }),
+  ])
+
+  console.log('Configurações PIX criadas:', pixSettings.length)
+
+  // Criar pedidos de exemplo com pagamentos
+  const allProducts = await prisma.product.findMany()
+  
+  // Pedido 1: Completed com pagamento confirmado
+  const order1 = await prisma.order.create({
+    data: {
+      buyerId: buyer.id,
+      totalAmount: 89.50,
+      status: 'COMPLETED',
+      items: {
+        create: [
+          {
+            productId: allProducts[0].id,
+            quantity: 5,
+            price: allProducts[0].currentPrice,
+          },
+          {
+            productId: allProducts[6].id,
+            quantity: 3,
+            price: allProducts[6].currentPrice,
+          },
+        ],
+      },
+    },
+  })
+
+  // SellerOrder para pedido 1
+  await prisma.sellerOrder.createMany({
+    data: [
+      { orderId: order1.id, sellerId: sellers[0].id, status: 'COMPLETED' },
+      { orderId: order1.id, sellerId: sellers[2].id, status: 'COMPLETED' },
+    ],
+    skipDuplicates: true,
+  })
+
+  // Payment para pedido 1 (confirmado)
+  const payment1 = await prisma.payment.create({
+    data: {
+      orderId: order1.id,
+      buyerId: buyer.id,
+      amount: 89.50,
+      status: 'CONFIRMED',
+      abacatePayId: 'charge_example_001',
+      paidAt: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000),
+    },
+  })
+
+  // PaymentSplits para pedido 1
+  await prisma.paymentSplit.createMany({
+    data: [
+      {
+        paymentId: payment1.id,
+        sellerId: sellers[0].id,
+        grossAmount: 39.50,
+        commission: 3.95,
+        netAmount: 35.55,
+        payoutStatus: 'SUCCESS',
+        paidAt: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000),
+      },
+      {
+        paymentId: payment1.id,
+        sellerId: sellers[2].id,
+        grossAmount: 50.00,
+        commission: 5.00,
+        netAmount: 45.00,
+        payoutStatus: 'SUCCESS',
+        paidAt: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000),
+      },
+    ],
+  })
+
+  // Payouts para pedido 1
+  const payouts1 = await prisma.payout.createMany({
+    data: [
+      {
+        sellerId: sellers[0].id,
+        paymentSplitId: (await prisma.paymentSplit.findFirst({ where: { paymentId: payment1.id, sellerId: sellers[0].id } }))!.id,
+        amount: 35.55,
+        pagseguroId: 'payout_001',
+        status: 'SUCCESS',
+        processedAt: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000),
+      },
+      {
+        sellerId: sellers[2].id,
+        paymentSplitId: (await prisma.paymentSplit.findFirst({ where: { paymentId: payment1.id, sellerId: sellers[2].id } }))!.id,
+        amount: 45.00,
+        pagseguroId: 'payout_002',
+        status: 'SUCCESS',
+        processedAt: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000),
+      },
+    ],
+  })
+
+  // Pedido 2: Em andamento (confirmado, preparando)
+  const order2 = await prisma.order.create({
+    data: {
+      buyerId: buyer.id,
+      totalAmount: 62.80,
+      status: 'PREPARING',
+      items: {
+        create: [
+          {
+            productId: allProducts[3].id,
+            quantity: 2,
+            price: allProducts[3].currentPrice,
+          },
+          {
+            productId: allProducts[4].id,
+            quantity: 2,
+            price: allProducts[4].currentPrice,
+          },
+        ],
+      },
+    },
+  })
+
+  await prisma.sellerOrder.createMany({
+    data: [
+      { orderId: order2.id, sellerId: sellers[1].id, status: 'PREPARING' },
+    ],
+    skipDuplicates: true,
+  })
+
+  const payment2 = await prisma.payment.create({
+    data: {
+      orderId: order2.id,
+      buyerId: buyer.id,
+      amount: 62.80,
+      status: 'CONFIRMED',
+      abacatePayId: 'charge_example_002',
+      paidAt: new Date(Date.now() - 12 * 60 * 60 * 1000),
+    },
+  })
+
+  await prisma.paymentSplit.create({
+    data: {
+      paymentId: payment2.id,
+      sellerId: sellers[1].id,
+      grossAmount: 62.80,
+      commission: 6.28,
+      netAmount: 56.52,
+      payoutStatus: 'PENDING',
+    },
+  })
+
+  // Pedido 3: Pago, aguardando preparo
+  const order3 = await prisma.order.create({
+    data: {
+      buyerId: buyer.id,
+      totalAmount: 42.00,
+      status: 'CONFIRMED',
+      items: {
+        create: [
+          {
+            productId: allProducts[7].id,
+            quantity: 1,
+            price: allProducts[7].currentPrice,
+          },
+        ],
+      },
+    },
+  })
+
+  await prisma.sellerOrder.createMany({
+    data: [
+      { orderId: order3.id, sellerId: sellers[2].id, status: 'CONFIRMED' },
+    ],
+    skipDuplicates: true,
+  })
+
+  const payment3 = await prisma.payment.create({
+    data: {
+      orderId: order3.id,
+      buyerId: buyer.id,
+      amount: 42.00,
+      status: 'CONFIRMED',
+      abacatePayId: 'charge_example_003',
+      paidAt: new Date(Date.now() - 6 * 60 * 60 * 1000),
+    },
+  })
+
+  await prisma.paymentSplit.create({
+    data: {
+      paymentId: payment3.id,
+      sellerId: sellers[2].id,
+      grossAmount: 42.00,
+      commission: 4.20,
+      netAmount: 37.80,
+      payoutStatus: 'PENDING',
+    },
+  })
+
+  console.log('Pedidos de exemplo criados: 3')
   console.log('Seed concluído com sucesso!')
 }
 

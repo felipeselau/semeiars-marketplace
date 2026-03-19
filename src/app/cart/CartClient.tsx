@@ -4,16 +4,14 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { updateCartItemQuantity, removeFromCart } from '@/actions/cart'
-import { createOrder } from '@/actions/order'
 import { Trash2, Minus, Plus, ShoppingBag, ArrowRight } from 'lucide-react'
 import { getMessage } from '@/lib/messages'
 
 import type { CartWithItems, CartItemWithProduct } from '@/types/database'
 
-export function CartClient({ cart, userId }: { cart: CartWithItems; userId: string }) {
+export function CartClient({ cart }: { cart: CartWithItems }) {
   const router = useRouter()
   const [cartData, setCartData] = useState(cart)
-  const [checkingOut, setCheckingOut] = useState(false)
 
   async function handleUpdateQuantity(itemId: string, quantity: number) {
     await updateCartItemQuantity(itemId, quantity)
@@ -35,19 +33,7 @@ export function CartClient({ cart, userId }: { cart: CartWithItems; userId: stri
   }
 
   async function handleCheckout() {
-    setCheckingOut(true)
-    const items = cartData.items.map((item: CartItemWithProduct) => ({
-      productId: item.productId,
-      quantity: item.quantity,
-      price: item.product.currentPrice,
-    }))
-
-    const result = await createOrder(userId, items)
-    
-    if (result.success) {
-      router.push('/orders')
-    }
-    setCheckingOut(false)
+    router.push('/checkout')
   }
 
   const total = cartData?.items.reduce(
@@ -147,11 +133,10 @@ export function CartClient({ cart, userId }: { cart: CartWithItems; userId: stri
               </div>
               <button
                 onClick={handleCheckout}
-                disabled={checkingOut}
-                className="w-full bg-primary text-primary-foreground py-3 rounded-lg hover:bg-primary/90 transition-colors disabled:opacity-50 flex items-center justify-center gap-2 font-medium"
+                className="w-full bg-primary text-primary-foreground py-3 rounded-lg hover:bg-primary/90 transition-colors flex items-center justify-center gap-2 font-medium"
               >
-                {checkingOut ? 'Processando...' : getMessage('cart.checkout')}
-                {!checkingOut && <ArrowRight className="w-5 h-5" />}
+                {getMessage('cart.checkout')}
+                <ArrowRight className="w-5 h-5" />
               </button>
             </div>
           </div>

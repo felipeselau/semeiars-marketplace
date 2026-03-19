@@ -100,7 +100,35 @@ export const messages = {
     description: 'Conheça quem está por trás deste produto',
     products: 'Produtos deste produtor',
     contact: 'Entrar em contato',
-    rating: 'Avaliação'
+    rating: 'Avaliação',
+    paymentSettings: {
+      title: 'Configurações de Pagamento',
+      description: 'Configure sua chave PIX para receber seus pagamentos.',
+      pixInfo: 'Informações do PIX',
+      cpfCnpj: 'CPF ou CNPJ',
+      pixKeyType: 'Tipo de chave PIX',
+      selectType: 'Selecione o tipo',
+      pixKey: 'Chave PIX',
+      pixKeyPlaceholder: 'Sua chave PIX',
+      pixBank: 'Banco ou Instituição',
+      terms: 'Termos e Condições',
+      acceptTerms: 'Eu aceito os termos e condições de uso',
+      save: 'Salvar Configurações'
+    },
+    balance: {
+      title: 'Meu Saldo',
+      available: 'Saldo Disponível',
+      pending: 'Pendente',
+      totalPaid: 'Total Recebido',
+      recentTransactions: 'Transações Recentes'
+    },
+    payouts: {
+      title: 'Histórico de Repasses',
+      amount: 'Valor',
+      status: 'Status',
+      date: 'Data',
+      retry: 'Tentar Novamente'
+    }
   },
 
   seller_orders: {

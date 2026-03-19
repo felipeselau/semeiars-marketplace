@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { auth, signOut } from '@/lib/auth'
-import { ShoppingCart, Package, User, LogOut, Plus, ClipboardList } from 'lucide-react'
+import { ShoppingCart, Package, User, LogOut, Plus, ClipboardList, Wallet, CreditCard } from 'lucide-react'
 import { getMessage } from '@/lib/messages'
 
 export default async function Navbar() {
@@ -33,6 +33,14 @@ export default async function Navbar() {
                   <Link href="/seller/orders" className="hover:text-primary flex items-center gap-1 transition-colors">
                     <ClipboardList className="w-4 h-4" />
                     {getMessage('seller_orders.title')}
+                  </Link>
+                  <Link href="/seller/balance" className="hover:text-primary flex items-center gap-1 transition-colors">
+                    <Wallet className="w-4 h-4" />
+                    Saldo
+                  </Link>
+                  <Link href="/seller/payment-settings" className="hover:text-primary flex items-center gap-1 transition-colors">
+                    <CreditCard className="w-4 h-4" />
+                    PIX
                   </Link>
                   <Link href="/products/new" className="hover:text-primary flex items-center gap-1 transition-colors">
                     <Plus className="w-4 h-4" />
