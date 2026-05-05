@@ -9,7 +9,7 @@ interface Props {
 
 export default async function CheckoutWaitingPage({ params }: Props) {
   const session = await auth()
-  
+
   if (!session?.user) {
     redirect('/login')
   }

@@ -1,8 +1,9 @@
 import crypto from 'crypto'
 
-const PAGSEGURO_BASE_URL = process.env.PAGSEGURO_ENV === 'production'
-  ? 'https://ws.pagseguro.uol.com.br/v2'
-  : 'https://ws.sandbox.pagseguro.uol.com.br/v2'
+const PAGSEGURO_BASE_URL =
+  process.env.PAGSEGURO_ENV === 'production'
+    ? 'https://ws.pagseguro.uol.com.br/v2'
+    : 'https://ws.sandbox.pagseguro.uol.com.br/v2'
 
 interface PayoutRequest {
   pixKey: string
@@ -99,10 +100,7 @@ export function validateWebhookSignature(payload: string, signature: string): bo
     return false
   }
 
-  const expectedSignature = crypto
-    .createHmac('sha256', token)
-    .update(payload)
-    .digest('hex')
+  const expectedSignature = crypto.createHmac('sha256', token).update(payload).digest('hex')
 
   const sigBuffer = Buffer.from(signature)
   const expectedBuffer = Buffer.from(expectedSignature)
@@ -114,7 +112,7 @@ const mockPayouts = new Map<string, PayoutResponse>()
 
 function createMockPayout(request: PayoutRequest): PayoutResponse {
   const payoutId = `mock_payout_${Date.now()}_${Math.random().toString(36).slice(2, 11)}`
-  
+
   const mockPayout: PayoutResponse = {
     id: payoutId,
     status: 'PENDING',
@@ -147,14 +145,16 @@ function createMockPayout(request: PayoutRequest): PayoutResponse {
 }
 
 function getMockPayoutStatus(payoutId: string): PayoutResponse {
-  return mockPayouts.get(payoutId) || {
-    id: payoutId,
-    status: 'FAILED',
-    referenceId: '',
-    amount: 0,
-    createdAt: new Date().toISOString(),
-    errorMessage: 'Payout not found',
-  }
+  return (
+    mockPayouts.get(payoutId) || {
+      id: payoutId,
+      status: 'FAILED',
+      referenceId: '',
+      amount: 0,
+      createdAt: new Date().toISOString(),
+      errorMessage: 'Payout not found',
+    }
+  )
 }
 
 export function simulateMockPayoutSuccess(payoutId: string): void {

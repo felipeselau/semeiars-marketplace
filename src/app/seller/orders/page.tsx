@@ -51,9 +51,7 @@ export default async function SellerOrdersPage({ searchParams }: Props) {
     <div>
       <div className="mb-8">
         <h1 className="text-3xl font-bold mb-2">{getMessage('seller_orders.title')}</h1>
-        <p className="text-muted-foreground">
-          Gerencie os pedidos dos seus produtos
-        </p>
+        <p className="text-muted-foreground">Gerencie os pedidos dos seus produtos</p>
       </div>
 
       {/* Status Summary Cards */}
@@ -67,9 +65,7 @@ export default async function SellerOrdersPage({ searchParams }: Props) {
               key={tab.key}
               href={`/seller/orders?status=${tab.key}`}
               className={`p-4 rounded-xl border transition-all ${
-                isActive
-                  ? 'border-primary bg-primary/5'
-                  : 'hover:border-primary/50'
+                isActive ? 'border-primary bg-primary/5' : 'hover:border-primary/50'
               }`}
             >
               <p className="text-2xl font-bold">{count}</p>
@@ -91,12 +87,11 @@ export default async function SellerOrdersPage({ searchParams }: Props) {
               key={tab.key}
               href={`/seller/orders?status=${tab.key}`}
               className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-colors ${
-                isActive
-                  ? 'bg-primary text-primary-foreground'
-                  : 'bg-muted hover:bg-muted/80'
+                isActive ? 'bg-primary text-primary-foreground' : 'bg-muted hover:bg-muted/80'
               }`}
             >
-              {getMessage(tab.label)} ({tab.key === 'all' ? counts.all : counts[tab.key as keyof typeof counts]})
+              {getMessage(tab.label)} (
+              {tab.key === 'all' ? counts.all : counts[tab.key as keyof typeof counts]})
             </Link>
           )
         })}
@@ -133,7 +128,9 @@ export default async function SellerOrdersPage({ searchParams }: Props) {
                       <span className="font-semibold text-lg">
                         #{sellerOrder.orderId.slice(-8).toUpperCase()}
                       </span>
-                      <span className={`px-3 py-1 rounded-full text-xs font-medium ${status.bg} ${status.color}`}>
+                      <span
+                        className={`px-3 py-1 rounded-full text-xs font-medium ${status.bg} ${status.color}`}
+                      >
                         {getMessage(`status.${sellerOrder.status.toLowerCase()}`)}
                       </span>
                     </div>
@@ -155,7 +152,12 @@ export default async function SellerOrdersPage({ searchParams }: Props) {
                       R$ {orderTotal.toFixed(2).replace('.', ',')}
                     </p>
                     <p className="text-sm text-muted-foreground">
-                      {sellerOrder.order.items.filter((item) => item.product.sellerId === session.user.id).length} item(s)
+                      {
+                        sellerOrder.order.items.filter(
+                          (item) => item.product.sellerId === session.user.id
+                        ).length
+                      }{' '}
+                      item(s)
                     </p>
                   </div>
                   <ArrowRight className="w-5 h-5 text-muted-foreground" />

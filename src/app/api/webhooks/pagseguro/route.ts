@@ -14,7 +14,7 @@ export async function POST(request: NextRequest) {
     }
 
     const isValid = validateWebhookSignature(body, signature)
-    
+
     if (!isValid && process.env.MOCK_PAYMENTS !== 'true') {
       console.error('[Webhook] Invalid PagSeguro signature')
       return NextResponse.json({ error: 'Invalid signature' }, { status: 401 })

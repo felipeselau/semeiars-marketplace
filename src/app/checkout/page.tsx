@@ -5,7 +5,7 @@ import { CheckoutClient } from './CheckoutClient'
 
 export default async function CheckoutPage() {
   const session = await auth()
-  
+
   if (!session?.user) {
     redirect('/login')
   }

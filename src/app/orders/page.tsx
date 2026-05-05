@@ -8,7 +8,7 @@ import type { OrderWithItems } from '@/types/database'
 
 export default async function OrdersPage() {
   const session = await auth()
-  
+
   if (!session) {
     redirect('/login')
   }
@@ -32,7 +32,9 @@ export default async function OrdersPage() {
       {orders.length === 0 ? (
         <div className="text-center py-16 bg-card rounded-xl border">
           <Package className="w-16 h-16 mx-auto mb-4 text-muted-foreground" />
-          <p className="text-muted-foreground text-lg mb-6">{getMessage('empty_states.no_orders')}</p>
+          <p className="text-muted-foreground text-lg mb-6">
+            {getMessage('empty_states.no_orders')}
+          </p>
           <Link
             href="/products"
             className="inline-flex items-center gap-2 text-primary hover:underline"
@@ -43,7 +45,11 @@ export default async function OrdersPage() {
       ) : (
         <div className="space-y-6">
           {orders.map((order) => {
-            const status = statusConfig[order.status as keyof typeof statusConfig] || { icon: Clock, color: 'text-gray-600 bg-gray-100', label: order.status }
+            const status = statusConfig[order.status as keyof typeof statusConfig] || {
+              icon: Clock,
+              color: 'text-gray-600 bg-gray-100',
+              label: order.status,
+            }
             const StatusIcon = status.icon
 
             return (
@@ -97,9 +103,7 @@ export default async function OrdersPage() {
                 </div>
 
                 <div className="p-4 border-t bg-muted/30 flex justify-between items-center">
-                  <span className="text-muted-foreground">
-                    {order.items.length} item(ns)
-                  </span>
+                  <span className="text-muted-foreground">{order.items.length} item(ns)</span>
                   <div className="text-right">
                     <span className="text-muted-foreground text-sm">Total: </span>
                     <span className="text-xl font-bold text-primary">

@@ -45,15 +45,13 @@ export function NewProductForm({ categories, userId }: { categories: Category[];
       </div>
 
       {error && (
-        <div className="bg-destructive/10 text-destructive p-4 rounded-lg mb-6">
-          {error}
-        </div>
+        <div className="bg-destructive/10 text-destructive p-4 rounded-lg mb-6">{error}</div>
       )}
 
       <form onSubmit={handleSubmit} className="space-y-6">
         <div className="bg-card rounded-xl border p-6 space-y-4">
           <h2 className="font-semibold">Informações do Produto</h2>
-          
+
           <div>
             <label htmlFor="name" className="block text-sm font-medium mb-2">
               Nome do Produto *
@@ -118,7 +116,7 @@ export function NewProductForm({ categories, userId }: { categories: Category[];
 
         <div className="bg-card rounded-xl border p-6 space-y-4">
           <h2 className="font-semibold">Precificação e Estoque</h2>
-          
+
           <div className="grid md:grid-cols-2 gap-4">
             <div>
               <label htmlFor="basePrice" className="block text-sm font-medium mb-2">

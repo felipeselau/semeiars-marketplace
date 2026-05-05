@@ -37,7 +37,9 @@ export default async function MyProductsPage() {
       {products.length === 0 ? (
         <div className="text-center py-16 bg-card rounded-xl border">
           <Package className="w-16 h-16 mx-auto mb-4 text-muted-foreground" />
-          <p className="text-muted-foreground text-lg mb-6">{getMessage('empty_states.no_sales')}</p>
+          <p className="text-muted-foreground text-lg mb-6">
+            {getMessage('empty_states.no_sales')}
+          </p>
           <Link
             href="/products/new"
             className="inline-flex items-center gap-2 text-primary hover:underline"

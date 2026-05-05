@@ -6,7 +6,7 @@ import { revalidatePath } from 'next/cache'
 
 export default async function PaymentSettingsPage() {
   const session = await auth()
-  
+
   if (!session?.user) {
     redirect('/login')
   }
@@ -24,30 +24,33 @@ export default async function PaymentSettingsPage() {
         {getMessage('seller.paymentSettings.description')}
       </p>
 
-      <form action={async (formData) => {
-        'use server'
-        
-        const sessionData = await auth()
-        
-        const data = {
-          cpfCnpj: formData.get('cpfCnpj') as string,
-          pixKey: formData.get('pixKey') as string,
-          pixKeyType: formData.get('pixKeyType') as 'CPF' | 'CNPJ' | 'EMAIL' | 'TELEFONE',
-          pixBank: formData.get('pixBank') as string || undefined,
-          termsAccepted: formData.get('termsAccepted') === 'on',
-        }
+      <form
+        action={async (formData) => {
+          'use server'
 
-        const result = await setupSellerPayment(sessionData!.user.id, data)
-        
-        if (result.error) {
-          console.error('Payment setup error:', result.error)
-        }
-        
-        revalidatePath('/seller/payment-settings')
-      }} className="space-y-6">
+          const sessionData = await auth()
+
+          const data = {
+            cpfCnpj: formData.get('cpfCnpj') as string,
+            pixKey: formData.get('pixKey') as string,
+            pixKeyType: formData.get('pixKeyType') as 'CPF' | 'CNPJ' | 'EMAIL' | 'TELEFONE',
+            pixBank: (formData.get('pixBank') as string) || undefined,
+            termsAccepted: formData.get('termsAccepted') === 'on',
+          }
+
+          const result = await setupSellerPayment(sessionData!.user.id, data)
+
+          if (result.error) {
+            console.error('Payment setup error:', result.error)
+          }
+
+          revalidatePath('/seller/payment-settings')
+        }}
+        className="space-y-6"
+      >
         <div className="bg-card rounded-xl border p-6 space-y-4">
           <h2 className="text-lg font-semibold">{getMessage('seller.paymentSettings.pixInfo')}</h2>
-          
+
           <div className="grid gap-4">
             <div>
               <label htmlFor="cpfCnpj" className="block text-sm font-medium mb-2">
@@ -92,7 +95,9 @@ export default async function PaymentSettingsPage() {
                 name="pixKey"
                 type="text"
                 defaultValue={sellerPayment?.pixKey || ''}
-                placeholder={sellerPayment?.pixKey || getMessage('seller.paymentSettings.pixKeyPlaceholder')}
+                placeholder={
+                  sellerPayment?.pixKey || getMessage('seller.paymentSettings.pixKeyPlaceholder')
+                }
                 className="w-full px-4 py-2 rounded-lg border bg-background focus:outline-none focus:ring-2 focus:ring-primary"
                 required
               />
@@ -120,7 +125,9 @@ export default async function PaymentSettingsPage() {
         </div>
 
         <div className="bg-card rounded-xl border p-6">
-          <h2 className="text-lg font-semibold mb-4">{getMessage('seller.paymentSettings.terms')}</h2>
+          <h2 className="text-lg font-semibold mb-4">
+            {getMessage('seller.paymentSettings.terms')}
+          </h2>
           <div className="prose prose-sm text-muted-foreground mb-4">
             <p>Ao aceitar estes termos, você concorda com:</p>
             <ul className="list-disc pl-4 space-y-1">
@@ -138,9 +145,7 @@ export default async function PaymentSettingsPage() {
               className="w-5 h-5 rounded border-gray-300 text-primary focus:ring-primary"
               required
             />
-            <span className="text-sm">
-              {getMessage('seller.paymentSettings.acceptTerms')}
-            </span>
+            <span className="text-sm">{getMessage('seller.paymentSettings.acceptTerms')}</span>
           </label>
         </div>
 

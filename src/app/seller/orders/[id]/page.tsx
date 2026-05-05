@@ -2,16 +2,38 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
-import { ArrowLeft, Package, User, Calendar, FileText, Check, Clock, Truck, CheckCircle, XCircle } from 'lucide-react'
+import {
+  ArrowLeft,
+  Package,
+  User,
+  Calendar,
+  FileText,
+  Check,
+  Clock,
+  Truck,
+  CheckCircle,
+  XCircle,
+} from 'lucide-react'
 import { getMessage } from '@/lib/messages'
-import { updateSellerOrderStatus, updateSellerOrderNote, updatePickupInstructions } from '@/actions/order'
+import {
+  updateSellerOrderStatus,
+  updateSellerOrderNote,
+  updatePickupInstructions,
+} from '@/actions/order'
 import type { OrderStatus } from '@prisma/client'
 
 type Props = {
   params: Promise<{ id: string }>
 }
 
-const statusFlow: OrderStatus[] = ['PENDING', 'CONFIRMED', 'PREPARING', 'READY', 'COMPLETED', 'CANCELLED']
+const statusFlow: OrderStatus[] = [
+  'PENDING',
+  'CONFIRMED',
+  'PREPARING',
+  'READY',
+  'COMPLETED',
+  'CANCELLED',
+]
 
 const statusConfig: Record<string, { color: string; bg: string; icon: typeof Clock }> = {
   PENDING: { color: 'text-yellow-600', bg: 'bg-yellow-100', icon: Clock },
@@ -76,7 +98,9 @@ export default function SellerOrderDetailPage({ params }: Props) {
         setOrderData(data)
         setNote(data.note || '')
         setPickupInstructions(data.pickupInstructions || '')
-        setEstimatedPickupDate(data.estimatedPickupDate ? data.estimatedPickupDate.split('T')[0] : '')
+        setEstimatedPickupDate(
+          data.estimatedPickupDate ? data.estimatedPickupDate.split('T')[0] : ''
+        )
         setSelectedStatus(data.status)
       }
       setLoading(false)
@@ -89,7 +113,7 @@ export default function SellerOrderDetailPage({ params }: Props) {
     if (!orderData) return
 
     const result = await updateSellerOrderStatus(orderData.id, newStatus, estimatedPickupDate)
-    
+
     if (result.success) {
       setSelectedStatus(newStatus)
       setSuccessMessage('Status atualizado!')
@@ -103,7 +127,7 @@ export default function SellerOrderDetailPage({ params }: Props) {
     if (!orderData) return
 
     const result = await updateSellerOrderNote(orderData.id, note)
-    
+
     if (result.success) {
       setSuccessMessage('Nota salva!')
       setTimeout(() => setSuccessMessage(''), 3000)
@@ -116,7 +140,7 @@ export default function SellerOrderDetailPage({ params }: Props) {
     if (!orderData) return
 
     const result = await updatePickupInstructions(orderData.id, pickupInstructions)
-    
+
     if (result.success) {
       setSuccessMessage('Instruções salvas!')
       setTimeout(() => setSuccessMessage(''), 3000)
@@ -167,9 +191,7 @@ export default function SellerOrderDetailPage({ params }: Props) {
       </Link>
 
       {successMessage && (
-        <div className="bg-green-100 text-green-800 p-4 rounded-lg mb-6">
-          {successMessage}
-        </div>
+        <div className="bg-green-100 text-green-800 p-4 rounded-lg mb-6">{successMessage}</div>
       )}
 
       <div className="grid lg:grid-cols-3 gap-8">
@@ -223,7 +245,9 @@ export default function SellerOrderDetailPage({ params }: Props) {
                           <config.icon className="w-5 h-5" />
                         )}
                       </div>
-                      <span className={`text-xs mt-1 whitespace-nowrap ${isCurrent ? 'font-medium' : 'text-muted-foreground'}`}>
+                      <span
+                        className={`text-xs mt-1 whitespace-nowrap ${isCurrent ? 'font-medium' : 'text-muted-foreground'}`}
+                      >
                         {getMessage(`status.${status.toLowerCase()}`)}
                       </span>
                     </div>

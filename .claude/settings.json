@@ -1,0 +1,18 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm run *)",
+      "Bash(npx prisma *)",
+      "Bash(npx tsx *)",
+      "Bash(tsc *)",
+      "Bash(prettier *)",
+      "Bash(eslint *)",
+      "Bash(git status)",
+      "Bash(git log *)",
+      "Bash(git diff *)",
+      "Bash(git branch *)",
+      "Bash(find . *)",
+      "Bash(ls *)"
+    ]
+  }
+}

@@ -59,7 +59,9 @@ export default async function ProductsPage({
 
       {products.length === 0 ? (
         <div className="text-center py-16 bg-card rounded-xl border">
-          <p className="text-muted-foreground text-lg mb-4">{getMessage('empty_states.no_products')}</p>
+          <p className="text-muted-foreground text-lg mb-4">
+            {getMessage('empty_states.no_products')}
+          </p>
           <Link href="/products" className="text-primary hover:underline">
             Limpar filtros
           </Link>
@@ -67,7 +69,8 @@ export default async function ProductsPage({
       ) : (
         <>
           <p className="text-sm text-muted-foreground mb-4">
-            {products.length} produto{products.length !== 1 ? 's' : ''} encontrado{products.length !== 1 ? 's' : ''}
+            {products.length} produto{products.length !== 1 ? 's' : ''} encontrado
+            {products.length !== 1 ? 's' : ''}
           </p>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {products.map((product) => (
@@ -103,9 +106,7 @@ export default async function ProductsPage({
                   <h3 className="font-semibold truncate group-hover:text-primary transition-colors">
                     {product.name}
                   </h3>
-                  <p className="text-sm text-muted-foreground truncate">
-                    {product.seller.name}
-                  </p>
+                  <p className="text-sm text-muted-foreground truncate">{product.seller.name}</p>
                   <div className="flex justify-between items-center mt-3">
                     <div>
                       {product.currentPrice < product.basePrice && (
@@ -117,7 +118,9 @@ export default async function ProductsPage({
                         R$ {product.currentPrice.toFixed(2).replace('.', ',')}
                       </p>
                     </div>
-                    <p className={`text-xs ${product.quantity > 0 ? 'text-green-600' : 'text-red-500'}`}>
+                    <p
+                      className={`text-xs ${product.quantity > 0 ? 'text-green-600' : 'text-red-500'}`}
+                    >
                       {product.quantity > 0 ? `${product.quantity} un` : 'Indisponível'}
                     </p>
                   </div>

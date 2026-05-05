@@ -5,11 +5,7 @@ import { Store, ArrowLeft } from 'lucide-react'
 import Link from 'next/link'
 import { getMessage } from '@/lib/messages'
 
-export default async function ProductDetailPage({
-  params,
-}: {
-  params: Promise<{ id: string }>
-}) {
+export default async function ProductDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
   const product = await getProductById(id)
   const session = await auth()
@@ -40,11 +36,7 @@ export default async function ProductDetailPage({
       <div className="grid md:grid-cols-2 gap-8">
         <div className="aspect-square relative overflow-hidden rounded-2xl bg-muted">
           {product.imageUrl ? (
-            <img
-              src={product.imageUrl}
-              alt={product.name}
-              className="object-cover w-full h-full"
-            />
+            <img src={product.imageUrl} alt={product.name} className="object-cover w-full h-full" />
           ) : (
             <div className="w-full h-full flex items-center justify-center">
               <span className="text-muted-foreground">Imagem Não Disponível</span>
@@ -55,9 +47,7 @@ export default async function ProductDetailPage({
         <div className="space-y-6">
           <div>
             {product.category && (
-              <span className="text-sm text-muted-foreground">
-                {product.category.name}
-              </span>
+              <span className="text-sm text-muted-foreground">{product.category.name}</span>
             )}
             <h1 className="text-3xl font-bold mt-1">{product.name}</h1>
           </div>
@@ -84,7 +74,9 @@ export default async function ProductDetailPage({
               </p>
             </div>
             <p className={`mt-2 ${product.quantity > 0 ? 'text-green-600' : 'text-red-500'}`}>
-              {product.quantity > 0 ? `✓ ${product.quantity} unidades em estoque` : '✗ Produto indisponível'}
+              {product.quantity > 0
+                ? `✓ ${product.quantity} unidades em estoque`
+                : '✗ Produto indisponível'}
             </p>
           </div>
 
@@ -102,9 +94,7 @@ export default async function ProductDetailPage({
           {isOwner && (
             <div className="p-4 bg-primary/10 rounded-xl border border-primary/20">
               <p className="font-medium-primary">Você está text vendendo este produto</p>
-              <p className="text-sm text-muted-foreground mt-1">
-                Este é seu anúncio
-              </p>
+              <p className="text-sm text-muted-foreground mt-1">Este é seu anúncio</p>
             </div>
           )}
         </div>

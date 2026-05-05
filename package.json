@@ -7,7 +7,12 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
+    "type-check": "tsc --noEmit",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
     "db:seed": "npx tsx prisma/seed.ts",
+    "db:reset": "npx prisma migrate reset --force --skip-generate",
+    "db:reset:seed": "npx prisma migrate reset --force --skip-generate && npm run db:seed",
     "vercel-build": "prisma generate && prisma migrate deploy && next build"
   },
   "prisma": {
@@ -41,6 +46,7 @@
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "16.1.6",
+    "prettier": "^3.8.3",
     "tailwindcss": "^4",
     "typescript": "^5"
   }

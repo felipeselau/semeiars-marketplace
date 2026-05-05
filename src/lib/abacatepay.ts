@@ -1,8 +1,9 @@
 import crypto from 'crypto'
 
-const ABACATEPAY_BASE_URL = process.env.ABACATEPAY_ENV === 'production' 
-  ? 'https://api.abacatepay.com/v1'
-  : 'https://sandbox.abacatepay.com/v1'
+const ABACATEPAY_BASE_URL =
+  process.env.ABACATEPAY_ENV === 'production'
+    ? 'https://api.abacatepay.com/v1'
+    : 'https://sandbox.abacatepay.com/v1'
 
 interface AbacatePayCustomer {
   name: string
@@ -79,7 +80,7 @@ export async function createPixCharge(request: CreateChargeRequest): Promise<Cre
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': `Bearer ${getApiKey()}`,
+      Authorization: `Bearer ${getApiKey()}`,
     },
     body: JSON.stringify(request),
   })
@@ -101,7 +102,7 @@ export async function getChargeStatus(chargeId: string): Promise<GetChargeRespon
   const response = await fetch(`${ABACATEPAY_BASE_URL}/billing/${chargeId}`, {
     method: 'GET',
     headers: {
-      'Authorization': `Bearer ${getApiKey()}`,
+      Authorization: `Bearer ${getApiKey()}`,
     },
   })
 
@@ -120,10 +121,7 @@ export function validateWebhookSignature(payload: string, signature: string): bo
     return false
   }
 
-  const expectedSignature = crypto
-    .createHmac('sha256', secret)
-    .update(payload)
-    .digest('hex')
+  const expectedSignature = crypto.createHmac('sha256', secret).update(payload).digest('hex')
 
   const sigBuffer = Buffer.from(signature)
   const expectedBuffer = Buffer.from(expectedSignature)
@@ -135,7 +133,7 @@ const mockCharges = new Map<string, CreateChargeResponse>()
 
 function createMockCharge(request: CreateChargeRequest): CreateChargeResponse {
   const chargeId = `mock_charge_${Date.now()}_${Math.random().toString(36).slice(2, 11)}`
-  
+
   const mockCharge: CreateChargeResponse = {
     id: chargeId,
     status: 'PENDING',
@@ -170,7 +168,7 @@ function createMockCharge(request: CreateChargeRequest): CreateChargeResponse {
 
 function getMockChargeStatus(chargeId: string): GetChargeResponse {
   const mock = mockCharges.get(chargeId)
-  
+
   if (!mock) {
     return {
       id: chargeId,

@@ -5,7 +5,7 @@ import { CartClient } from './CartClient'
 
 export default async function CartPage() {
   const session = await auth()
-  
+
   if (!session) {
     redirect('/login')
   }

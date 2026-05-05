@@ -4,12 +4,15 @@ import { prisma } from '@/lib/prisma'
 import { revalidatePath } from 'next/cache'
 import { OrderStatus } from '@prisma/client'
 
-export async function createOrder(userId: string, items: { productId: string; quantity: number; price: number }[]) {
+export async function createOrder(
+  userId: string,
+  items: { productId: string; quantity: number; price: number }[]
+) {
   const totalAmount = items.reduce((sum, item) => sum + item.price * item.quantity, 0)
 
   const cart = await prisma.cart.findUnique({
     where: { userId },
-    include: { 
+    include: {
       items: {
         include: {
           product: {
@@ -25,7 +28,7 @@ export async function createOrder(userId: string, items: { productId: string; qu
   }
 
   // Get unique sellers from the cart items
-  const sellerIds = [...new Set(cart.items.map(item => item.product.sellerId))]
+  const sellerIds = [...new Set(cart.items.map((item) => item.product.sellerId))]
 
   const order = await prisma.order.create({
     data: {
@@ -39,7 +42,7 @@ export async function createOrder(userId: string, items: { productId: string; qu
         })),
       },
       sellerOrders: {
-        create: sellerIds.map(sellerId => ({
+        create: sellerIds.map((sellerId) => ({
           sellerId,
           status: 'PENDING',
         })),
@@ -170,7 +173,7 @@ export async function getSellerOrderCounts(sellerId: string) {
     CANCELLED: 0,
   }
 
-  orders.forEach(order => {
+  orders.forEach((order) => {
     counts[order.status]++
   })
 
@@ -223,10 +226,13 @@ export async function getOrderItemsForSeller(orderId: string, sellerId: string) 
   if (!sellerOrder) return null
 
   // Filter items that belong to this seller
-  const items = sellerOrder.order.items.filter(item => item.product.sellerId === sellerId)
+  const items = sellerOrder.order.items.filter((item) => item.product.sellerId === sellerId)
 
   // Calculate total for this seller
-  const total = items.reduce((sum: number, item: { price: number; quantity: number }) => sum + item.price * item.quantity, 0)
+  const total = items.reduce(
+    (sum: number, item: { price: number; quantity: number }) => sum + item.price * item.quantity,
+    0
+  )
 
   return {
     ...sellerOrder,

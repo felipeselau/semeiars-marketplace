@@ -9,7 +9,13 @@ import { getMessage } from '@/lib/messages'
 import type { Session } from 'next-auth'
 import type { ProductWithCategory } from '@/types/database'
 
-export function ProfileClient({ session: initialSession, products }: { session: Session; products: ProductWithCategory[] }) {
+export function ProfileClient({
+  session: initialSession,
+  products,
+}: {
+  session: Session
+  products: ProductWithCategory[]
+}) {
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState('')
   const [success, setSuccess] = useState('')
@@ -53,16 +59,10 @@ export function ProfileClient({ session: initialSession, products }: { session: 
       </div>
 
       {error && (
-        <div className="bg-destructive/10 text-destructive p-4 rounded-lg mb-6">
-          {error}
-        </div>
+        <div className="bg-destructive/10 text-destructive p-4 rounded-lg mb-6">{error}</div>
       )}
 
-      {success && (
-        <div className="bg-green-100 text-green-800 p-4 rounded-lg mb-6">
-          {success}
-        </div>
-      )}
+      {success && <div className="bg-green-100 text-green-800 p-4 rounded-lg mb-6">{success}</div>}
 
       <div className="grid md:grid-cols-2 gap-8">
         <div className="space-y-6">
@@ -175,7 +175,9 @@ export function ProfileClient({ session: initialSession, products }: { session: 
                 </div>
                 <div>
                   <p className="text-sm text-muted-foreground">Função</p>
-                  <span className={`inline-block px-3 py-1 rounded-full text-sm font-medium ${session?.user?.role === 'SELLER' ? 'bg-green-100 text-green-800' : 'bg-blue-100 text-blue-800'}`}>
+                  <span
+                    className={`inline-block px-3 py-1 rounded-full text-sm font-medium ${session?.user?.role === 'SELLER' ? 'bg-green-100 text-green-800' : 'bg-blue-100 text-blue-800'}`}
+                  >
                     {session?.user?.role === 'SELLER' ? 'Vendedor' : 'Comprador'}
                   </span>
                 </div>
@@ -216,7 +218,8 @@ export function ProfileClient({ session: initialSession, products }: { session: 
                     >
                       <p className="font-medium">{product.name}</p>
                       <p className="text-sm text-muted-foreground">
-                        R$ {product.currentPrice.toFixed(2).replace('.', ',')} - {product.quantity} un
+                        R$ {product.currentPrice.toFixed(2).replace('.', ',')} - {product.quantity}{' '}
+                        un
                       </p>
                     </Link>
                   ))}

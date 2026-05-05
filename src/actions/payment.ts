@@ -5,17 +5,23 @@ import { revalidatePath } from 'next/cache'
 import { encryptPIXKey, decryptPIXKey, validatePixKey } from '@/lib/encryption'
 import { createPixCharge, getChargeStatus, getMockCharge } from '@/lib/abacatepay'
 import { createPayout, simulateMockPayoutSuccess, getMockPayout } from '@/lib/pagseguro'
-import { OrderStatus, PaymentStatus, PaymentSplitStatus, PayoutStatus, PixKeyType } from '@prisma/client'
+import {
+  OrderStatus,
+  PaymentStatus,
+  PaymentSplitStatus,
+  PayoutStatus,
+  PixKeyType,
+} from '@prisma/client'
 import { z } from 'zod'
 
-const COMMISSION_RATE = 0.10
+const COMMISSION_RATE = 0.1
 
 const SellerPaymentSchema = z.object({
   cpfCnpj: z.string().min(11).max(14),
   pixKey: z.string().min(3).max(100),
   pixKeyType: z.enum(['CPF', 'CNPJ', 'EMAIL', 'TELEFONE']),
   pixBank: z.string().optional(),
-  termsAccepted: z.boolean().refine(val => val === true, 'Termos devem ser aceitos'),
+  termsAccepted: z.boolean().refine((val) => val === true, 'Termos devem ser aceitos'),
 })
 
 export async function setupSellerPayment(
@@ -23,7 +29,7 @@ export async function setupSellerPayment(
   data: z.infer<typeof SellerPaymentSchema>
 ) {
   const validation = SellerPaymentSchema.safeParse(data)
-  
+
   if (!validation.success) {
     return { error: validation.error.issues[0].message }
   }
@@ -119,12 +125,9 @@ const CreatePaymentSchema = z.object({
   customerDocument: z.string().min(11).max(14),
 })
 
-export async function createPixPayment(
-  userId: string,
-  data: z.infer<typeof CreatePaymentSchema>
-) {
+export async function createPixPayment(userId: string, data: z.infer<typeof CreatePaymentSchema>) {
   const validation = CreatePaymentSchema.safeParse(data)
-  
+
   if (!validation.success) {
     return { error: validation.error.issues[0].message }
   }
@@ -225,13 +228,15 @@ export async function createPixPayment(
         status: charge.pix ? PaymentStatus.WAITING : PaymentStatus.PENDING,
         pixQrCode: charge.pix?.qrCode,
         pixCopyPaste: charge.pix?.copyPaste,
-        paymentUrl: charge.pix ? `${process.env.NEXTAUTH_URL}/checkout/waiting/${payment.id}` : null,
+        paymentUrl: charge.pix
+          ? `${process.env.NEXTAUTH_URL}/checkout/waiting/${payment.id}`
+          : null,
       },
     })
 
     revalidatePath('/cart')
     revalidatePath('/orders')
-    
+
     return {
       success: true,
       paymentId: payment.id,
@@ -243,7 +248,7 @@ export async function createPixPayment(
       prisma.paymentSplit.deleteMany({ where: { paymentId: payment.id } }),
       prisma.payment.delete({ where: { id: payment.id } }),
     ])
-    
+
     console.error('Payment creation error:', error)
     return { error: 'Erro ao criar pagamento. Tente novamente.' }
   }
@@ -294,7 +299,7 @@ export async function checkPaymentStatus(paymentId: string) {
 
       if (newStatus === PaymentStatus.CONFIRMED) {
         await processPaymentSplit(paymentId)
-        
+
         await prisma.order.update({
           where: { id: payment.orderId },
           data: { status: OrderStatus.CONFIRMED },
@@ -365,7 +370,7 @@ export async function processPaymentSplit(paymentId: string) {
     }
 
     const sellerPayment = await getSellerPaymentForPayout(split.sellerId)
-    
+
     if (!sellerPayment) {
       console.log(`No payment settings for seller ${split.sellerId}, skipping payout`)
       continue
@@ -406,7 +411,7 @@ export async function processPaymentSplit(paymentId: string) {
       revalidatePath('/seller/payouts')
     } catch (error) {
       console.error(`Payout error for split ${split.id}:`, error)
-      
+
       await prisma.paymentSplit.update({
         where: { id: split.id },
         data: { payoutStatus: PaymentSplitStatus.FAILED },
@@ -440,8 +445,10 @@ export async function getSellerBalance(sellerId: string) {
   for (const split of splits) {
     if (split.payoutStatus === PaymentSplitStatus.PENDING) {
       pending += split.netAmount
-    } else if (split.payoutStatus === PaymentSplitStatus.SENT || 
-               split.payoutStatus === PaymentSplitStatus.PROCESSING) {
+    } else if (
+      split.payoutStatus === PaymentSplitStatus.SENT ||
+      split.payoutStatus === PaymentSplitStatus.PROCESSING
+    ) {
       inTransit += split.netAmount
     } else if (split.payoutStatus === PaymentSplitStatus.SUCCESS) {
       available += split.netAmount
@@ -496,7 +503,7 @@ export async function retryPayout(payoutId: string) {
   }
 
   const sellerPayment = await getSellerPaymentForPayout(payout.sellerId)
-  
+
   if (!sellerPayment) {
     return { error: 'Configuração de pagamento não encontrada' }
   }
@@ -529,14 +536,14 @@ export async function retryPayout(payoutId: string) {
         errorMessage: error instanceof Error ? error.message : 'Erro desconhecido',
       },
     })
-    
+
     return { error: 'Erro ao tentar novamente. Entre em contato com o suporte.' }
   }
 }
 
 export async function getAllPayouts(status?: string) {
   const where: Record<string, unknown> = {}
-  
+
   if (status && status !== 'all') {
     where.status = status.toUpperCase()
   }

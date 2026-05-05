@@ -41,15 +41,11 @@ export default function LoginPage() {
     <div className="max-w-md mx-auto mt-8">
       <div className="text-center mb-8">
         <h1 className="text-2xl font-bold mb-2">{getMessage('auth.login_title')}</h1>
-        <p className="text-muted-foreground">
-          Entre com sua conta para continuar
-        </p>
+        <p className="text-muted-foreground">Entre com sua conta para continuar</p>
       </div>
-      
+
       {error && (
-        <div className="bg-destructive/10 text-destructive p-4 rounded-lg mb-6">
-          {error}
-        </div>
+        <div className="bg-destructive/10 text-destructive p-4 rounded-lg mb-6">{error}</div>
       )}
 
       <form onSubmit={handleSubmit} className="space-y-4">

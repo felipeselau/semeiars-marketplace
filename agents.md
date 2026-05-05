@@ -11,16 +11,16 @@
 
 ## 2. Technology Stack
 
-| Layer | Technology |
-|-------|------------|
-| Framework | Next.js 16 (App Router) |
-| Language | TypeScript |
-| Database | PostgreSQL |
-| ORM | Prisma |
-| Auth | NextAuth.js (Auth.js) |
-| Styling | Tailwind CSS |
-| Validation | Zod |
-| UI Components | shadcn/ui + Radix UI |
+| Layer         | Technology              |
+| ------------- | ----------------------- |
+| Framework     | Next.js 16 (App Router) |
+| Language      | TypeScript              |
+| Database      | PostgreSQL              |
+| ORM           | Prisma                  |
+| Auth          | NextAuth.js (Auth.js)   |
+| Styling       | Tailwind CSS            |
+| Validation    | Zod                     |
+| UI Components | shadcn/ui + Radix UI    |
 
 ---
 
@@ -57,6 +57,7 @@ Product → User (belongsTo)
 ```
 
 ### Core Models
+
 - **User**: id, name, email, password, phone, address, role (BUYER/SELLER)
 - **Product**: id, name, description, basePrice, currentPrice, quantity, imageUrl, sellerId, categoryId
 - **Category**: id, name
@@ -70,29 +71,29 @@ Product → User (belongsTo)
 
 ### Colors (Tailwind Tokens)
 
-| Token | Hex | Usage |
-|-------|-----|-------|
-| `--primary` | #4a7c6f | Main actions, links (Forest Green) |
-| `--primary-foreground` | #f7f5f2 | Text on primary |
-| `--secondary` | #ece8e0 | Cards, sections (Warm Beige) |
-| `--secondary-foreground` | #4a4540 | Text on secondary |
-| `--accent` | #d98c4d | CTAs, highlights (Terracotta) |
-| `--accent-foreground` | #f7f5f2 | Text on accent |
-| `--earth` | #6b5c4d | Dark accents |
-| `--warm-yellow` | #e8c06a | Highlights |
-| `--background` | #f7f5f2 | Page background |
-| `--foreground` | #3d3632 | Primary text |
-| `--border` | #ddd8cf | Borders |
-| `--muted` | #ece8e0 | Muted backgrounds |
-| `--muted-foreground` | #8a817a | Secondary text |
-| `--destructive` | #dc2626 | Error states |
+| Token                    | Hex     | Usage                              |
+| ------------------------ | ------- | ---------------------------------- |
+| `--primary`              | #4a7c6f | Main actions, links (Forest Green) |
+| `--primary-foreground`   | #f7f5f2 | Text on primary                    |
+| `--secondary`            | #ece8e0 | Cards, sections (Warm Beige)       |
+| `--secondary-foreground` | #4a4540 | Text on secondary                  |
+| `--accent`               | #d98c4d | CTAs, highlights (Terracotta)      |
+| `--accent-foreground`    | #f7f5f2 | Text on accent                     |
+| `--earth`                | #6b5c4d | Dark accents                       |
+| `--warm-yellow`          | #e8c06a | Highlights                         |
+| `--background`           | #f7f5f2 | Page background                    |
+| `--foreground`           | #3d3632 | Primary text                       |
+| `--border`               | #ddd8cf | Borders                            |
+| `--muted`                | #ece8e0 | Muted backgrounds                  |
+| `--muted-foreground`     | #8a817a | Secondary text                     |
+| `--destructive`          | #dc2626 | Error states                       |
 
 ### Typography
 
-| Element | Font Family |
-|---------|-------------|
-| Headings (h1-h6) | Poppins |
-| Body text | Inter |
+| Element          | Font Family |
+| ---------------- | ----------- |
+| Headings (h1-h6) | Poppins     |
+| Body text        | Inter       |
 
 ### Component Patterns
 
@@ -113,12 +114,12 @@ Product → User (belongsTo)
 
 ### Fees
 
-| Item | Value |
-|------|-------|
-| AbacatePay fee | R$ 0.80/transaction |
-| Platform fee | R$ 0.20/transaction |
-| Commission | 10% of seller amount |
-| **Total** | **R$ 1.00 per sale** |
+| Item           | Value                |
+| -------------- | -------------------- |
+| AbacatePay fee | R$ 0.80/transaction  |
+| Platform fee   | R$ 0.20/transaction  |
+| Commission     | 10% of seller amount |
+| **Total**      | **R$ 1.00 per sale** |
 
 ### Planned Payment Models
 
@@ -224,13 +225,13 @@ npm run lint         # Run ESLint
 
 ### Test Accounts (after seed)
 
-| Role | Email | Password |
-|------|-------|----------|
-| Seller | joao.silva@email.com | senha123 |
-| Seller | maria.santos@email.com | senha123 |
+| Role   | Email                    | Password |
+| ------ | ------------------------ | -------- |
+| Seller | joao.silva@email.com     | senha123 |
+| Seller | maria.santos@email.com   | senha123 |
 | Seller | pedro.oliveira@email.com | senha123 |
-| Seller | ana.ferreira@email.com | senha123 |
-| Buyer | comprador@email.com | senha123 |
+| Seller | ana.ferreira@email.com   | senha123 |
+| Buyer  | comprador@email.com      | senha123 |
 
 ---
 
@@ -274,6 +275,7 @@ NEXTAUTH_URL="http://localhost:3000"
 ## 13. Roadmap
 
 ### v0.1.0 - MVP (Current)
+
 - [x] Authentication
 - [x] Product catalog
 - [x] Shopping cart
@@ -283,6 +285,7 @@ NEXTAUTH_URL="http://localhost:3000"
 - [ ] Image upload
 
 ### v1.0 - Family Farming
+
 - [ ] Payment integration (AbacatePay + PagSeguro)
 - [ ] Split system between sellers
 - [ ] Farmer validation
@@ -290,6 +293,7 @@ NEXTAUTH_URL="http://localhost:3000"
 - [ ] Sales reports
 
 ### v2.0 - Expansion
+
 - [ ] Review/rating system
 - [ ] Buyer-seller chat
 - [ ] Messaging system

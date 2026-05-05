@@ -5,7 +5,7 @@ import { PayoutHistoryClient } from './PayoutHistoryClient'
 
 export default async function PayoutsPage() {
   const session = await auth()
-  
+
   if (!session?.user) {
     redirect('/login')
   }
@@ -17,12 +17,12 @@ export default async function PayoutsPage() {
   const payouts = await getPayoutHistory(session.user.id)
 
   return (
-    <PayoutHistoryClient 
-      initialPayouts={payouts.map(p => ({
+    <PayoutHistoryClient
+      initialPayouts={payouts.map((p) => ({
         ...p,
         createdAt: p.createdAt,
         processedAt: p.processedAt,
-      }))} 
+      }))}
     />
   )
 }

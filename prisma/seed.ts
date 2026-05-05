@@ -126,9 +126,10 @@ async function main() {
     prisma.product.create({
       data: {
         name: 'Arroz Integral Orgânico',
-        description: 'Arroz integral cultivado de forma sustentável na região de Pelotas. Rico em fibras e nutrientes.',
-        basePrice: 8.50,
-        currentPrice: 7.90,
+        description:
+          'Arroz integral cultivado de forma sustentável na região de Pelotas. Rico em fibras e nutrientes.',
+        basePrice: 8.5,
+        currentPrice: 7.9,
         quantity: 500,
         imageUrl: 'https://images.unsplash.com/photo-1586201375761-83865001e31c?w=400',
         sellerId: sellers[0].id,
@@ -139,8 +140,8 @@ async function main() {
       data: {
         name: 'Feijão Preto Tipo 1',
         description: 'Feijão preto de alta qualidade, plantado e colhido na região Sul.',
-        basePrice: 12.00,
-        currentPrice: 10.50,
+        basePrice: 12.0,
+        currentPrice: 10.5,
         quantity: 300,
         imageUrl: 'https://images.unsplash.com/photo-1515543904323-de27c9fad2d7?w=400',
         sellerId: sellers[0].id,
@@ -151,8 +152,8 @@ async function main() {
       data: {
         name: 'Trigo Branco',
         description: 'Trigo branco de excelente qualidade para moinho.',
-        basePrice: 2.80,
-        currentPrice: 2.50,
+        basePrice: 2.8,
+        currentPrice: 2.5,
         quantity: 2000,
         imageUrl: 'https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?w=400',
         sellerId: sellers[0].id,
@@ -165,8 +166,8 @@ async function main() {
       data: {
         name: 'Maçã Fuji Orgânica',
         description: 'Maçãs Fuji frescas, cultivadas sem agrotóxicos na Serra Gaúcha.',
-        basePrice: 15.00,
-        currentPrice: 13.90,
+        basePrice: 15.0,
+        currentPrice: 13.9,
         quantity: 200,
         imageUrl: 'https://images.unsplash.com/photo-1560806887-1e4cd0b6cbd6?w=400',
         sellerId: sellers[1].id,
@@ -177,8 +178,8 @@ async function main() {
       data: {
         name: 'Uva Niagara',
         description: 'Uvas Niagara frescas, direto da vineyard na Serra do RS.',
-        basePrice: 18.00,
-        currentPrice: 16.50,
+        basePrice: 18.0,
+        currentPrice: 16.5,
         quantity: 150,
         imageUrl: 'https://images.unsplash.com/photo-1537640538966-79f369143f8f?w=400',
         sellerId: sellers[1].id,
@@ -189,8 +190,8 @@ async function main() {
       data: {
         name: 'Alface Americana',
         description: 'Alface americana crocante, cultivada em estufa.',
-        basePrice: 4.50,
-        currentPrice: 3.90,
+        basePrice: 4.5,
+        currentPrice: 3.9,
         quantity: 100,
         imageUrl: 'https://images.unsplash.com/photo-1622206151226-18ca2c9ab4a1?w=400',
         sellerId: sellers[1].id,
@@ -201,8 +202,8 @@ async function main() {
       data: {
         name: 'Tomate Cereja',
         description: 'Tomate cereja doce e suculento.',
-        basePrice: 8.00,
-        currentPrice: 7.20,
+        basePrice: 8.0,
+        currentPrice: 7.2,
         quantity: 80,
         imageUrl: 'https://images.unsplash.com/photo-1546470427-227c7b3f8fc2?w=400',
         sellerId: sellers[1].id,
@@ -215,8 +216,8 @@ async function main() {
       data: {
         name: 'Queijo Artesanal Colonial',
         description: 'Queijo colonial feito com leite fresco de nossas próprias vacas.',
-        basePrice: 45.00,
-        currentPrice: 42.00,
+        basePrice: 45.0,
+        currentPrice: 42.0,
         quantity: 50,
         imageUrl: 'https://images.unsplash.com/photo-1486297678162-eb2a19b0a32d?w=400',
         sellerId: sellers[2].id,
@@ -227,8 +228,8 @@ async function main() {
       data: {
         name: 'Leite Fresco Natural',
         description: 'Leite fresco pasteurizado, sem conservantes.',
-        basePrice: 6.50,
-        currentPrice: 5.90,
+        basePrice: 6.5,
+        currentPrice: 5.9,
         quantity: 100,
         imageUrl: 'https://images.unsplash.com/photo-1563636619-e9143da7973b?w=400',
         sellerId: sellers[2].id,
@@ -239,8 +240,8 @@ async function main() {
       data: {
         name: 'Ovos de Galinha Caipira',
         description: 'Ovos de galinhas criadas soltas, alimentação natural.',
-        basePrice: 12.00,
-        currentPrice: 10.90,
+        basePrice: 12.0,
+        currentPrice: 10.9,
         quantity: 200,
         imageUrl: 'https://images.unsplash.com/photo-1582722872445-44dc5f7e3c8f?w=400',
         sellerId: sellers[2].id,
@@ -251,8 +252,8 @@ async function main() {
       data: {
         name: 'Mel Silvestre Puro',
         description: 'Mel puro de abelhas silvestres da Campanha Gaúcha.',
-        basePrice: 35.00,
-        currentPrice: 32.00,
+        basePrice: 35.0,
+        currentPrice: 32.0,
         quantity: 40,
         imageUrl: 'https://images.unsplash.com/photo-1587049352846-4a222e784d38?w=400',
         sellerId: sellers[2].id,
@@ -265,8 +266,8 @@ async function main() {
       data: {
         name: 'Muda de Videira',
         description: 'Mudas de videira para uva, variedade Niágara e Isabel.',
-        basePrice: 15.00,
-        currentPrice: 12.90,
+        basePrice: 15.0,
+        currentPrice: 12.9,
         quantity: 100,
         imageUrl: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400',
         sellerId: sellers[3].id,
@@ -277,8 +278,8 @@ async function main() {
       data: {
         name: 'Semente de Grama Bermuda',
         description: 'Sementes de grama Bermuda para pastagem.',
-        basePrice: 25.00,
-        currentPrice: 22.50,
+        basePrice: 25.0,
+        currentPrice: 22.5,
         quantity: 60,
         imageUrl: 'https://images.unsplash.com/photo-1592419044706-39796d40f98c?w=400',
         sellerId: sellers[3].id,
@@ -289,8 +290,8 @@ async function main() {
       data: {
         name: 'Muda de Macieira',
         description: 'Mudas de macieira variedade Fuji e Gala.',
-        basePrice: 45.00,
-        currentPrice: 40.00,
+        basePrice: 45.0,
+        currentPrice: 40.0,
         quantity: 30,
         imageUrl: 'https://images.unsplash.com/photo-1567306295427-94503f8300d7?w=400',
         sellerId: sellers[3].id,
@@ -301,8 +302,8 @@ async function main() {
       data: {
         name: 'Semente de Soja',
         description: 'Sementes de soja transgênica variedade bm310.',
-        basePrice: 180.00,
-        currentPrice: 165.00,
+        basePrice: 180.0,
+        currentPrice: 165.0,
         quantity: 20,
         imageUrl: 'https://images.unsplash.com/photo-1620574387735-3624d75b2dbc?w=400',
         sellerId: sellers[3].id,
@@ -400,12 +401,12 @@ async function main() {
 
   // Criar pedidos de exemplo com pagamentos
   const allProducts = await prisma.product.findMany()
-  
+
   // Pedido 1: Completed com pagamento confirmado
   const order1 = await prisma.order.create({
     data: {
       buyerId: buyer.id,
-      totalAmount: 89.50,
+      totalAmount: 89.5,
       status: 'COMPLETED',
       items: {
         create: [
@@ -438,7 +439,7 @@ async function main() {
     data: {
       orderId: order1.id,
       buyerId: buyer.id,
-      amount: 89.50,
+      amount: 89.5,
       status: 'CONFIRMED',
       abacatePayId: 'charge_example_001',
       paidAt: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000),
@@ -451,7 +452,7 @@ async function main() {
       {
         paymentId: payment1.id,
         sellerId: sellers[0].id,
-        grossAmount: 39.50,
+        grossAmount: 39.5,
         commission: 3.95,
         netAmount: 35.55,
         payoutStatus: 'SUCCESS',
@@ -460,9 +461,9 @@ async function main() {
       {
         paymentId: payment1.id,
         sellerId: sellers[2].id,
-        grossAmount: 50.00,
-        commission: 5.00,
-        netAmount: 45.00,
+        grossAmount: 50.0,
+        commission: 5.0,
+        netAmount: 45.0,
         payoutStatus: 'SUCCESS',
         paidAt: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000),
       },
@@ -474,7 +475,9 @@ async function main() {
     data: [
       {
         sellerId: sellers[0].id,
-        paymentSplitId: (await prisma.paymentSplit.findFirst({ where: { paymentId: payment1.id, sellerId: sellers[0].id } }))!.id,
+        paymentSplitId: (await prisma.paymentSplit.findFirst({
+          where: { paymentId: payment1.id, sellerId: sellers[0].id },
+        }))!.id,
         amount: 35.55,
         pagseguroId: 'payout_001',
         status: 'SUCCESS',
@@ -482,8 +485,10 @@ async function main() {
       },
       {
         sellerId: sellers[2].id,
-        paymentSplitId: (await prisma.paymentSplit.findFirst({ where: { paymentId: payment1.id, sellerId: sellers[2].id } }))!.id,
-        amount: 45.00,
+        paymentSplitId: (await prisma.paymentSplit.findFirst({
+          where: { paymentId: payment1.id, sellerId: sellers[2].id },
+        }))!.id,
+        amount: 45.0,
         pagseguroId: 'payout_002',
         status: 'SUCCESS',
         processedAt: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000),
@@ -495,7 +500,7 @@ async function main() {
   const order2 = await prisma.order.create({
     data: {
       buyerId: buyer.id,
-      totalAmount: 62.80,
+      totalAmount: 62.8,
       status: 'PREPARING',
       items: {
         create: [
@@ -515,9 +520,7 @@ async function main() {
   })
 
   await prisma.sellerOrder.createMany({
-    data: [
-      { orderId: order2.id, sellerId: sellers[1].id, status: 'PREPARING' },
-    ],
+    data: [{ orderId: order2.id, sellerId: sellers[1].id, status: 'PREPARING' }],
     skipDuplicates: true,
   })
 
@@ -525,7 +528,7 @@ async function main() {
     data: {
       orderId: order2.id,
       buyerId: buyer.id,
-      amount: 62.80,
+      amount: 62.8,
       status: 'CONFIRMED',
       abacatePayId: 'charge_example_002',
       paidAt: new Date(Date.now() - 12 * 60 * 60 * 1000),
@@ -536,7 +539,7 @@ async function main() {
     data: {
       paymentId: payment2.id,
       sellerId: sellers[1].id,
-      grossAmount: 62.80,
+      grossAmount: 62.8,
       commission: 6.28,
       netAmount: 56.52,
       payoutStatus: 'PENDING',
@@ -547,7 +550,7 @@ async function main() {
   const order3 = await prisma.order.create({
     data: {
       buyerId: buyer.id,
-      totalAmount: 42.00,
+      totalAmount: 42.0,
       status: 'CONFIRMED',
       items: {
         create: [
@@ -562,9 +565,7 @@ async function main() {
   })
 
   await prisma.sellerOrder.createMany({
-    data: [
-      { orderId: order3.id, sellerId: sellers[2].id, status: 'CONFIRMED' },
-    ],
+    data: [{ orderId: order3.id, sellerId: sellers[2].id, status: 'CONFIRMED' }],
     skipDuplicates: true,
   })
 
@@ -572,7 +573,7 @@ async function main() {
     data: {
       orderId: order3.id,
       buyerId: buyer.id,
-      amount: 42.00,
+      amount: 42.0,
       status: 'CONFIRMED',
       abacatePayId: 'charge_example_003',
       paidAt: new Date(Date.now() - 6 * 60 * 60 * 1000),
@@ -583,9 +584,9 @@ async function main() {
     data: {
       paymentId: payment3.id,
       sellerId: sellers[2].id,
-      grossAmount: 42.00,
-      commission: 4.20,
-      netAmount: 37.80,
+      grossAmount: 42.0,
+      commission: 4.2,
+      netAmount: 37.8,
       payoutStatus: 'PENDING',
     },
   })

@@ -1,0 +1,7 @@
+.next/
+node_modules/
+out/
+build/
+*.lock
+*.tsbuildinfo
+prisma/migrations/

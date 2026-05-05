@@ -12,11 +12,11 @@ interface PaymentWaitingClientProps {
   amount: number
 }
 
-export function PaymentWaitingClient({ 
-  paymentId, 
-  pixQrCode, 
+export function PaymentWaitingClient({
+  paymentId,
+  pixQrCode,
   pixCopyPaste,
-  amount 
+  amount,
 }: PaymentWaitingClientProps) {
   const router = useRouter()
   const [status, setStatus] = useState<'waiting' | 'confirmed' | 'failed'>('waiting')
@@ -97,7 +97,7 @@ export function PaymentWaitingClient({
 
         <div className="bg-white p-4 rounded-lg mb-4">
           {pixQrCode ? (
-            <img 
+            <img
               src={`https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(pixQrCode)}`}
               alt="QR Code PIX"
               className="w-48 h-48 mx-auto"

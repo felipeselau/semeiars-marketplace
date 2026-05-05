@@ -15,12 +15,14 @@ export function CartClient({ cart }: { cart: CartWithItems }) {
 
   async function handleUpdateQuantity(itemId: string, quantity: number) {
     await updateCartItemQuantity(itemId, quantity)
-    const newItems = cartData.items.map((item: CartItemWithProduct) => {
-      if (item.id === itemId) {
-        return { ...item, quantity }
-      }
-      return item
-    }).filter((item: CartItemWithProduct) => item.quantity > 0)
+    const newItems = cartData.items
+      .map((item: CartItemWithProduct) => {
+        if (item.id === itemId) {
+          return { ...item, quantity }
+        }
+        return item
+      })
+      .filter((item: CartItemWithProduct) => item.quantity > 0)
     setCartData({ ...cartData, items: newItems })
   }
 
@@ -28,7 +30,7 @@ export function CartClient({ cart }: { cart: CartWithItems }) {
     await removeFromCart(itemId)
     setCartData({
       ...cartData,
-      items: cartData.items.filter((item: CartItemWithProduct) => item.id !== itemId)
+      items: cartData.items.filter((item: CartItemWithProduct) => item.id !== itemId),
     })
   }
 
@@ -36,10 +38,11 @@ export function CartClient({ cart }: { cart: CartWithItems }) {
     router.push('/checkout')
   }
 
-  const total = cartData?.items.reduce(
-    (sum: number, item: CartItemWithProduct) => sum + item.product.currentPrice * item.quantity,
-    0
-  ) || 0
+  const total =
+    cartData?.items.reduce(
+      (sum: number, item: CartItemWithProduct) => sum + item.product.currentPrice * item.quantity,
+      0
+    ) || 0
 
   return (
     <div>

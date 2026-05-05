@@ -3,6 +3,7 @@
 ## Visão Geral
 
 O marketplace opera com pagamento centralizado:
+
 1. Comprador paga via AbacatePay
 2. Valor total entra na conta do marketplace
 3. Backend calcula comissão e valor de cada vendedor
@@ -12,22 +13,22 @@ O marketplace opera com pagamento centralizado:
 
 ## Taxas e Comissões
 
-| Item | Valor |
-|------|-------|
-| Taxa AbacatePay | R$ 0,80 por transação |
-| Taxa Plataforma | R$ 0,20 por transação |
+| Item                 | Valor                    |
+| -------------------- | ------------------------ |
+| Taxa AbacatePay      | R$ 0,80 por transação    |
+| Taxa Plataforma      | R$ 0,20 por transação    |
 | Comissão Marketplace | 10% do valor do vendedor |
-| **Total Taxa** | **R$ 1,00 por venda** |
+| **Total Taxa**       | **R$ 1,00 por venda**    |
 
 ### Exemplo de Cálculo
 
 Pedido: R$ 200,00 (2 vendedores)
 
-| Vendedor | Valor Items | Comissão (10%) | Recebe |
-|----------|-------------|----------------|--------|
-| Vendedor A | R$ 80,00 | R$ 8,00 | R$ 72,00 |
-| Vendedor B | R$ 120,00 | R$ 12,00 | R$ 108,00 |
-| **Total** | R$ 200,00 | R$ 20,00 | R$ 180,00 |
+| Vendedor   | Valor Items | Comissão (10%) | Recebe    |
+| ---------- | ----------- | -------------- | --------- |
+| Vendedor A | R$ 80,00    | R$ 8,00        | R$ 72,00  |
+| Vendedor B | R$ 120,00   | R$ 12,00       | R$ 108,00 |
+| **Total**  | R$ 200,00   | R$ 20,00       | R$ 180,00 |
 
 ---
 
@@ -55,16 +56,20 @@ Pedido: R$ 200,00 (2 vendedores)
 ## Regras de Negócio
 
 ### 1. Pagamento do Cliente
+
 - Cliente sempre paga uma única vez, mesmo com produtos de vários vendedores
 - Pagamento via PIX da AbacatePay
 - Pedido só é válido quando pagamento está **CONFIRMADO**
 
 ### 2. Cálculo de Split
+
 Para cada pedido:
+
 - Cada item pertence a um vendedor
 - Sistema calcula: `valor_vendedor = soma_itens_vendedor - comissão`
 
 ### 3. Regras de Repasse (Payout)
+
 - Payout ocorre se:
   - Pagamento = CONFIRMADO
   - Pedido não cancelado
@@ -72,6 +77,7 @@ Para cada pedido:
 - Cada vendedor recebe via PIX
 
 ### 4. Estornos / Cancelamentos
+
 - Se pedido cancelado antes do payout: valor não é enviado
 - Se payout já occurred: marcar como reversão pendente
 
@@ -80,6 +86,7 @@ Para cada pedido:
 ## Fluxo Completo
 
 ### Fase 1: Vendedor Configura Recebimento
+
 ```
 /seller/payment-settings
   → CPF/CNPJ + Chave PIX + Banco
@@ -89,24 +96,26 @@ Para cada pedido:
 ```
 
 ### Fase 2: Comprador Paga
+
 ```
 Carrinho → Checkout
   → Identificar vendedores únicos do pedido
   → Criar Payment (status: PENDING)
   → Criar PaymentSplit para cada vendedor
-  
+
   → Chamar AbacatePay billing/create
     {
       amount: 20000 (centavos),
       customer: { name, email, document },
       returnUrl, completionUrl
     }
-  
+
   → Receber: pix.qrCode, pix.copyPaste
   → Redirecionar para /checkout/waiting/[id]
 ```
 
 ### Fase 3: Confirmação (Webhook + Polling)
+
 ```
 Webhook AbacatePay → /api/webhooks/abacatepay
   → Validar assinatura
@@ -120,12 +129,13 @@ Polling (cliente verifica) → /api/payment/[id]/status
 ```
 
 ### Fase 4: Split e Payout
+
 ```
 Rotina: processPaymentSplit(paymentId)
   Para cada PaymentSplit:
     → Calcular: grossAmount × 0.90 = netAmount
     → Status: PENDING
-    
+
   → Para cada vendedor (automático):
     → Chamar PagSeguro Payout API
       {
@@ -138,6 +148,7 @@ Rotina: processPaymentSplit(paymentId)
 ```
 
 ### Fase 5: Confirmação Payout
+
 ```
 Webhook PagSeguro → /api/webhooks/pagseguro
   → Validar assinatura
@@ -150,6 +161,7 @@ Webhook PagSeguro → /api/webhooks/pagseguro
 ## Schema do Banco de Dados (Prisma)
 
 ### Modelo: SellerPayment
+
 Dados PIX e verificação do vendedor
 
 ```prisma
@@ -169,6 +181,7 @@ model SellerPayment {
 ```
 
 ### Modelo: Payment
+
 Pagamento principal
 
 ```prisma
@@ -191,6 +204,7 @@ model Payment {
 ```
 
 ### Modelo: PaymentSplit
+
 Divisão entre vendedores
 
 ```prisma
@@ -210,6 +224,7 @@ model PaymentSplit {
 ```
 
 ### Modelo: Payout
+
 Histórico de repasses
 
 ```prisma
@@ -230,15 +245,15 @@ model Payout {
 
 ## Páginas a Criar/Atualizar
 
-| Rota | Tipo | Descrição |
-|------|------|-----------|
-| `/seller/payment-settings` | Nova | Cadastro PIX + aceite termos |
-| `/seller/payouts` | Nova | Histórico de repasses |
-| `/seller/balance` | Nova | Saldo e extrato |
-| `/checkout` | Atualizar | Escolher método PIX |
-| `/checkout/waiting/[id]` | Nova | Espera pagamento PIX |
-| `/api/webhooks/abacatepay` | Nova | Confirmação pagamento |
-| `/api/webhooks/pagseguro` | Nova | Confirmação payout |
+| Rota                       | Tipo      | Descrição                    |
+| -------------------------- | --------- | ---------------------------- |
+| `/seller/payment-settings` | Nova      | Cadastro PIX + aceite termos |
+| `/seller/payouts`          | Nova      | Histórico de repasses        |
+| `/seller/balance`          | Nova      | Saldo e extrato              |
+| `/checkout`                | Atualizar | Escolher método PIX          |
+| `/checkout/waiting/[id]`   | Nova      | Espera pagamento PIX         |
+| `/api/webhooks/abacatepay` | Nova      | Confirmação pagamento        |
+| `/api/webhooks/pagseguro`  | Nova      | Confirmação payout           |
 
 ---
 
@@ -272,6 +287,7 @@ getAllPayouts()
 ### AbacatePay (Entrada de Dinheiro)
 
 **Criar Cobrança:**
+
 ```
 POST /billing/create
 {
@@ -285,6 +301,7 @@ POST /billing/create
 ```
 
 **Resposta:**
+
 ```
 {
   id: "charge_xxx",
@@ -299,6 +316,7 @@ POST /billing/create
 ### PagSeguro Payout API (Saída de Dinheiro)
 
 **Criar Transferência PIX:**
+
 ```
 POST /payouts
 {
@@ -312,29 +330,29 @@ POST /payouts
 
 ## Segurança
 
-| Item | Implementação |
-|------|---------------|
-| Assinatura webhook | Validar `x-abacate-signature` |
-| Chave PIX | Criptografar (AES-256) no banco |
-| Tokens API | Variáveis de ambiente apenas |
-| Rate limiting | Next.js middleware |
-| Retry | Exponential backoff para payout |
+| Item               | Implementação                   |
+| ------------------ | ------------------------------- |
+| Assinatura webhook | Validar `x-abacate-signature`   |
+| Chave PIX          | Criptografar (AES-256) no banco |
+| Tokens API         | Variáveis de ambiente apenas    |
+| Rate limiting      | Next.js middleware              |
+| Retry              | Exponential backoff para payout |
 
 ---
 
 ## Fases de Implementação
 
-| Fase | Descrição | Prioridade |
-|------|-----------|------------|
-| 1 | Schema + Migration | Alta |
-| 2 | Configuração PIX vendedor | Alta |
-| 3 | Checkout + AbacatePay | Alta |
-| 4 | Webhook AbacatePay | Alta |
-| 5 | Waiting page + Split | Alta |
-| 6 | PagSeguro Payout | Alta |
-| 7 | Webhook PagSeguro | Média |
-| 8 | Histórico/Extrato | Média |
-| 9 | Termos legais | Baixa |
+| Fase | Descrição                 | Prioridade |
+| ---- | ------------------------- | ---------- |
+| 1    | Schema + Migration        | Alta       |
+| 2    | Configuração PIX vendedor | Alta       |
+| 3    | Checkout + AbacatePay     | Alta       |
+| 4    | Webhook AbacatePay        | Alta       |
+| 5    | Waiting page + Split      | Alta       |
+| 6    | PagSeguro Payout          | Alta       |
+| 7    | Webhook PagSeguro         | Média      |
+| 8    | Histórico/Extrato         | Média      |
+| 9    | Termos legais             | Baixa      |
 
 ---
 
@@ -350,12 +368,12 @@ POST /payouts
 
 ## Riscos e Mitigações
 
-| Risco | Mitigação |
-|-------|-----------|
-| Payout falhar | Retry automático |
-| Vendedor cadastra PIX errado | Validação + teste PIX |
-| Chargeback | Reter payout por X dias |
-| Fraude | KYC vendedor |
+| Risco                        | Mitigação               |
+| ---------------------------- | ----------------------- |
+| Payout falhar                | Retry automático        |
+| Vendedor cadastra PIX errado | Validação + teste PIX   |
+| Chargeback                   | Reter payout por X dias |
+| Fraude                       | KYC vendedor            |
 
 ---
 

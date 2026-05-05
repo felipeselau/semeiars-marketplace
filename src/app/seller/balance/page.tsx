@@ -6,7 +6,7 @@ import { Clock, CheckCircle, TrendingUp } from 'lucide-react'
 
 export default async function SellerBalancePage() {
   const session = await auth()
-  
+
   if (!session?.user) {
     redirect('/login')
   }
@@ -21,9 +21,7 @@ export default async function SellerBalancePage() {
   return (
     <div className="max-w-4xl mx-auto py-8 px-4">
       <h1 className="text-3xl font-bold mb-2">{getMessage('seller.balance.title')}</h1>
-      <p className="text-muted-foreground mb-8">
-        Acompanhe suas finanças e recebimentos
-      </p>
+      <p className="text-muted-foreground mb-8">Acompanhe suas finanças e recebimentos</p>
 
       <div className="grid md:grid-cols-3 gap-6 mb-8">
         <div className="bg-card rounded-xl border p-6">
@@ -64,38 +62,44 @@ export default async function SellerBalancePage() {
       </div>
 
       <div className="bg-card rounded-xl border p-6">
-        <h2 className="text-lg font-semibold mb-4">{getMessage('seller.balance.recentTransactions')}</h2>
-        
+        <h2 className="text-lg font-semibold mb-4">
+          {getMessage('seller.balance.recentTransactions')}
+        </h2>
+
         {payouts.length === 0 ? (
-          <p className="text-muted-foreground text-center py-8">
-            Nenhuma transação ainda.
-          </p>
+          <p className="text-muted-foreground text-center py-8">Nenhuma transação ainda.</p>
         ) : (
           <div className="space-y-3">
             {payouts.map((payout) => (
-              <div 
-                key={payout.id} 
+              <div
+                key={payout.id}
                 className="flex items-center justify-between p-4 bg-muted rounded-lg"
               >
                 <div>
-                  <p className="font-medium">
-                    R$ {payout.amount.toFixed(2).replace('.', ',')}
-                  </p>
+                  <p className="font-medium">R$ {payout.amount.toFixed(2).replace('.', ',')}</p>
                   <p className="text-sm text-muted-foreground">
                     {new Date(payout.createdAt).toLocaleDateString('pt-BR')}
                   </p>
                 </div>
                 <div className="text-right">
-                  <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${
-                    payout.status === 'SUCCESS' ? 'bg-green-100 text-green-800' :
-                    payout.status === 'PROCESSING' ? 'bg-yellow-100 text-yellow-800' :
-                    payout.status === 'FAILED' ? 'bg-red-100 text-red-800' :
-                    'bg-gray-100 text-gray-800'
-                  }`}>
-                    {payout.status === 'SUCCESS' ? 'Recebido' :
-                     payout.status === 'PROCESSING' ? 'Processando' :
-                     payout.status === 'FAILED' ? 'Falhou' :
-                     'Pendente'}
+                  <span
+                    className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${
+                      payout.status === 'SUCCESS'
+                        ? 'bg-green-100 text-green-800'
+                        : payout.status === 'PROCESSING'
+                          ? 'bg-yellow-100 text-yellow-800'
+                          : payout.status === 'FAILED'
+                            ? 'bg-red-100 text-red-800'
+                            : 'bg-gray-100 text-gray-800'
+                    }`}
+                  >
+                    {payout.status === 'SUCCESS'
+                      ? 'Recebido'
+                      : payout.status === 'PROCESSING'
+                        ? 'Processando'
+                        : payout.status === 'FAILED'
+                          ? 'Falhou'
+                          : 'Pendente'}
                   </span>
                 </div>
               </div>
@@ -104,10 +108,7 @@ export default async function SellerBalancePage() {
         )}
 
         {payouts.length > 0 && (
-          <a
-            href="/seller/payouts"
-            className="block mt-4 text-center text-primary hover:underline"
-          >
+          <a href="/seller/payouts" className="block mt-4 text-center text-primary hover:underline">
             Ver histórico completo
           </a>
         )}

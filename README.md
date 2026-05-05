@@ -38,14 +38,14 @@ O **SemeiaRS** é uma plataforma de marketplace C2C (Consumer-to-Consumer) desen
 
 ### Stack Principal
 
-| Tecnologia | Descrição |
-|------------|------------|
-| **Next.js 16** | Framework React fullstack com App Router |
-| **TypeScript** | Tipagem estática para confiabilidade |
-| **Prisma** | ORM para PostgreSQL |
-| **NextAuth.js** | Sistema de autenticação |
-| **Tailwind CSS** | Framework de estilização |
-| **Zod** | Validação de dados |
+| Tecnologia       | Descrição                                |
+| ---------------- | ---------------------------------------- |
+| **Next.js 16**   | Framework React fullstack com App Router |
+| **TypeScript**   | Tipagem estática para confiabilidade     |
+| **Prisma**       | ORM para PostgreSQL                      |
+| **NextAuth.js**  | Sistema de autenticação                  |
+| **Tailwind CSS** | Framework de estilização                 |
+| **Zod**          | Validação de dados                       |
 
 ### Banco de Dados
 
@@ -65,23 +65,27 @@ O **SemeiaRS** é uma plataforma de marketplace C2C (Consumer-to-Consumer) desen
 ### Instalação
 
 1. **Clone o repositório**
+
 ```bash
 git clone https://github.com/felipeselau/semeiars-marketplace.git
 cd semeiars-marketplace
 ```
 
 2. **Instale as dependências**
+
 ```bash
 npm install
 ```
 
 3. **Configure as variáveis de ambiente**
+
 ```bash
 cp .env.example .env
 # Edite o arquivo .env com suas configurações
 ```
 
 4. **Configure o banco de dados**
+
 ```bash
 # Gere o Prisma Client
 npx prisma generate
@@ -94,11 +98,13 @@ npm run db:seed
 ```
 
 5. **Inicie o servidor de desenvolvimento**
+
 ```bash
 npm run dev
 ```
 
 6. **Acesse**
+
 ```
 http://localhost:3000
 ```
@@ -121,16 +127,18 @@ NEXTAUTH_URL="http://localhost:3000"
 Após rodar o seed, você terá acesso a:
 
 ### Vendedores
-| Email | Senha | Cidade |
-|-------|-------|---------|
-| joao.silva@email.com | senha123 | Pelotas |
-| maria.santos@email.com | senha123 | Caxias do Sul |
-| pedro.oliveira@email.com | senha123 | Bagé |
-| ana.ferreira@email.com | senha123 | Canela |
+
+| Email                    | Senha    | Cidade        |
+| ------------------------ | -------- | ------------- |
+| joao.silva@email.com     | senha123 | Pelotas       |
+| maria.santos@email.com   | senha123 | Caxias do Sul |
+| pedro.oliveira@email.com | senha123 | Bagé          |
+| ana.ferreira@email.com   | senha123 | Canela        |
 
 ### Comprador
-| Email | Senha |
-|-------|-------|
+
+| Email               | Senha    |
+| ------------------- | -------- |
 | comprador@email.com | senha123 |
 
 ---
@@ -165,6 +173,7 @@ src/
 ## 🗺️ Roadmap
 
 ### v0.1.0 - MVP (Atual)
+
 - [x] Autenticação
 - [x] Catálogo de produtos
 - [x] Carrinho de compras
@@ -174,6 +183,7 @@ src/
 - [ ] Upload de imagens
 
 ### v1.0 - Agricultura Familiar
+
 - [ ] Integração de pagamentos (AbacatePay + PagSeguro)
 - [ ] Sistema de split entre vendedores
 - [ ] Validação de agricultores
@@ -181,6 +191,7 @@ src/
 - [ ] Relatórios de vendas
 
 ### v2.0 - Expansão
+
 - [ ] Sistema de avaliações
 - [ ] Chat entre comprador/vendedor
 - [ ] Sistema de mensagens
@@ -215,6 +226,7 @@ Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para ma
 ## 👤 Autor
 
 **Felipe Selau**
+
 - GitHub: [@felipeselau](https://github.com/felipeselau)
 
 ---

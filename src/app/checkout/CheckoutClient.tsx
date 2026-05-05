@@ -22,10 +22,8 @@ export function CheckoutClient({ cart, userId, userEmail, userName }: CheckoutCl
   const [customerDocument, setCustomerDocument] = useState('')
   const [orderId, setOrderId] = useState<string | null>(null)
 
-  const total = cart?.items.reduce(
-    (sum, item) => sum + item.product.currentPrice * item.quantity,
-    0
-  ) || 0
+  const total =
+    cart?.items.reduce((sum, item) => sum + item.product.currentPrice * item.quantity, 0) || 0
 
   useEffect(() => {
     if (step === 'success' && orderId) {
@@ -38,7 +36,7 @@ export function CheckoutClient({ cart, userId, userEmail, userName }: CheckoutCl
     setStep('processing')
 
     const result = await initiateCheckout(userId)
-    
+
     if (result.error) {
       setError(result.error)
       setStep('review')
@@ -61,7 +59,7 @@ export function CheckoutClient({ cart, userId, userEmail, userName }: CheckoutCl
     }
 
     const isMock = process.env.NEXT_PUBLIC_MOCK_PAYMENTS === 'true'
-    
+
     if (isMock) {
       await checkPaymentStatus(paymentResult.paymentId!)
     }
@@ -94,7 +92,7 @@ export function CheckoutClient({ cart, userId, userEmail, userName }: CheckoutCl
         <div className="lg:col-span-2 space-y-4">
           <div className="bg-card rounded-xl border p-6">
             <h2 className="text-lg font-semibold mb-4">{getMessage('checkout.review')}</h2>
-            
+
             {cart?.items.map((item) => (
               <div key={item.id} className="flex gap-4 py-4 border-b last:border-0">
                 <div className="w-20 h-20 rounded-lg overflow-hidden bg-muted flex-shrink-0">
@@ -112,11 +110,10 @@ export function CheckoutClient({ cart, userId, userEmail, userName }: CheckoutCl
                 </div>
                 <div className="flex-1">
                   <h3 className="font-medium">{item.product.name}</h3>
-                  <p className="text-sm text-muted-foreground">
-                    {item.product.seller.name}
-                  </p>
+                  <p className="text-sm text-muted-foreground">{item.product.seller.name}</p>
                   <p className="text-sm">
-                    Qtd: {item.quantity} x R$ {item.product.currentPrice.toFixed(2).replace('.', ',')}
+                    Qtd: {item.quantity} x R${' '}
+                    {item.product.currentPrice.toFixed(2).replace('.', ',')}
                   </p>
                 </div>
                 <div className="font-medium">
@@ -129,9 +126,7 @@ export function CheckoutClient({ cart, userId, userEmail, userName }: CheckoutCl
           <div className="bg-card rounded-xl border p-6">
             <h2 className="text-lg font-semibold mb-4">Dados para Pagamento</h2>
             <div>
-              <label className="block text-sm font-medium mb-2">
-                CPF do comprador
-              </label>
+              <label className="block text-sm font-medium mb-2">CPF do comprador</label>
               <input
                 type="text"
                 value={customerDocument}
@@ -148,8 +143,10 @@ export function CheckoutClient({ cart, userId, userEmail, userName }: CheckoutCl
 
         <div className="lg:col-span-1">
           <div className="bg-card rounded-xl border p-6 sticky top-4">
-            <h2 className="text-lg font-semibold mb-4">{getMessage('cart.summary') || 'Resumo do Pedido'}</h2>
-            
+            <h2 className="text-lg font-semibold mb-4">
+              {getMessage('cart.summary') || 'Resumo do Pedido'}
+            </h2>
+
             <div className="space-y-3 mb-4">
               <div className="flex justify-between">
                 <span className="text-muted-foreground">{getMessage('cart.subtotal')}</span>

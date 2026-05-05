@@ -57,20 +57,28 @@ export function PayoutHistoryClient({ initialPayouts }: { initialPayouts: Payout
                     R$ {payout.amount.toFixed(2).replace('.', ',')}
                   </td>
                   <td className="px-6 py-4">
-                    <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium ${
-                      payout.status === 'SUCCESS' ? 'bg-green-100 text-green-800' :
-                      payout.status === 'PROCESSING' ? 'bg-yellow-100 text-yellow-800' :
-                      payout.status === 'FAILED' ? 'bg-red-100 text-red-800' :
-                      'bg-gray-100 text-gray-800'
-                    }`}>
+                    <span
+                      className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium ${
+                        payout.status === 'SUCCESS'
+                          ? 'bg-green-100 text-green-800'
+                          : payout.status === 'PROCESSING'
+                            ? 'bg-yellow-100 text-yellow-800'
+                            : payout.status === 'FAILED'
+                              ? 'bg-red-100 text-red-800'
+                              : 'bg-gray-100 text-gray-800'
+                      }`}
+                    >
                       {payout.status === 'SUCCESS' && <CheckCircle className="w-3.5 h-3.5" />}
                       {payout.status === 'PROCESSING' && <Clock className="w-3.5 h-3.5" />}
                       {payout.status === 'FAILED' && <XCircle className="w-3.5 h-3.5" />}
                       {payout.status === 'PENDING' && <AlertCircle className="w-3.5 h-3.5" />}
-                      {payout.status === 'SUCCESS' ? 'Recebido' :
-                       payout.status === 'PROCESSING' ? 'Processando' :
-                       payout.status === 'FAILED' ? 'Falhou' :
-                       'Pendente'}
+                      {payout.status === 'SUCCESS'
+                        ? 'Recebido'
+                        : payout.status === 'PROCESSING'
+                          ? 'Processando'
+                          : payout.status === 'FAILED'
+                            ? 'Falhou'
+                            : 'Pendente'}
                     </span>
                   </td>
                   <td className="px-6 py-4 text-right">
@@ -80,7 +88,9 @@ export function PayoutHistoryClient({ initialPayouts }: { initialPayouts: Payout
                         disabled={retrying === payout.id}
                         className="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 disabled:opacity-50"
                       >
-                        <RefreshCw className={`w-3.5 h-3.5 ${retrying === payout.id ? 'animate-spin' : ''}`} />
+                        <RefreshCw
+                          className={`w-3.5 h-3.5 ${retrying === payout.id ? 'animate-spin' : ''}`}
+                        />
                         {getMessage('seller.payouts.retry')}
                       </button>
                     )}

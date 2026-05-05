@@ -8,7 +8,13 @@ import { getMessage } from '@/lib/messages'
 
 import type { Session } from 'next-auth'
 
-export function AddToCartButton({ productId, session }: { productId: string; session: Session | null }) {
+export function AddToCartButton({
+  productId,
+  session,
+}: {
+  productId: string
+  session: Session | null
+}) {
   const router = useRouter()
   const [quantity, setQuantity] = useState(1)
   const [adding, setAdding] = useState(false)
@@ -16,7 +22,7 @@ export function AddToCartButton({ productId, session }: { productId: string; ses
 
   async function handleAddToCart() {
     setAdding(true)
-    
+
     if (!session) {
       router.push('/login')
       return
@@ -55,8 +61,8 @@ export function AddToCartButton({ productId, session }: { productId: string; ses
         onClick={handleAddToCart}
         disabled={adding || added}
         className={`w-full py-4 rounded-lg transition-colors flex items-center justify-center gap-2 font-medium ${
-          added 
-            ? 'bg-green-600 text-white' 
+          added
+            ? 'bg-green-600 text-white'
             : 'bg-primary text-primary-foreground hover:bg-primary/90 disabled:opacity-50'
         }`}
       >

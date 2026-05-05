@@ -45,9 +45,9 @@ export async function initiateCheckout(userId: string) {
 
   if (sellersWithoutPayment.size > 0) {
     const sellerList = Array.from(sellersWithoutPayment).join(', ')
-    return { 
+    return {
       error: `Os seguintes vendedores ainda não configuraram pagamento: ${sellerList}. Aguarde até que todos configurem o PIX.`,
-      sellersWithoutPayment: Array.from(sellersWithoutPayment)
+      sellersWithoutPayment: Array.from(sellersWithoutPayment),
     }
   }
 
@@ -70,7 +70,7 @@ export async function initiateCheckout(userId: string) {
   })
 
   const uniqueSellerIds = [...new Set(cart.items.map((item) => item.product.sellerId))]
-  
+
   for (const sellerId of uniqueSellerIds) {
     await prisma.sellerOrder.create({
       data: {

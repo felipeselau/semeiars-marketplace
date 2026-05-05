@@ -2,7 +2,7 @@ export const messages = {
   brand: {
     name: 'SemeiaRS',
     slogan: 'Conectando quem planta a quem consome',
-    tagline: 'O marketplace dos produtores locais do Rio Grande do Sul'
+    tagline: 'O marketplace dos produtores locais do Rio Grande do Sul',
   },
 
   hero: {
@@ -10,14 +10,14 @@ export const messages = {
     subtitle: 'Compre direto de pequenos produtores do Rio Grande do Sul, sem intermediários.',
     description: 'No SemeiaRS você encontra alimentos frescos, artesanais e de origem confiável.',
     cta_primary: 'Explorar produtos',
-    cta_secondary: 'Quero vender no SemeiaRS'
+    cta_secondary: 'Quero vender no SemeiaRS',
   },
 
   about: {
     title: 'O que é o SemeiaRS?',
     text: 'O SemeiaRS é uma plataforma que conecta produtores locais a consumidores que valorizam qualidade, sustentabilidade e economia regional.',
     mission: 'Nossa missão é fortalecer a agricultura familiar e aproximar o campo da cidade.',
-    vision: 'Ser referência em comércio local digital no Rio Grande do Sul.'
+    vision: 'Ser referência em comércio local digital no Rio Grande do Sul.',
   },
 
   benefits: {
@@ -25,14 +25,14 @@ export const messages = {
       'Produtos frescos e artesanais',
       'Compra direta do produtor',
       'Apoio à economia local',
-      'Origem transparente'
+      'Origem transparente',
     ],
     producer: [
       'Venda sem intermediários',
       'Mais visibilidade',
       'Gestão simples de pedidos',
-      'Contato direto com clientes'
-    ]
+      'Contato direto com clientes',
+    ],
   },
 
   cta: {
@@ -41,7 +41,7 @@ export const messages = {
     register: 'Criar minha conta',
     login: 'Entrar',
     see_more: 'Ver mais',
-    learn_more: 'Saiba mais'
+    learn_more: 'Saiba mais',
   },
 
   product: {
@@ -54,7 +54,7 @@ export const messages = {
     out_of_stock: 'Produto indisponível',
     details: 'Detalhes do produto',
     description: 'Descrição',
-    category: 'Categoria'
+    category: 'Categoria',
   },
 
   cart: {
@@ -64,7 +64,7 @@ export const messages = {
     checkout: 'Finalizar compra',
     remove: 'Remover',
     total: 'Total',
-    subtotal: 'Subtotal'
+    subtotal: 'Subtotal',
   },
 
   checkout: {
@@ -73,7 +73,7 @@ export const messages = {
     payment: 'Pagamento',
     confirm: 'Confirmar pedido',
     success: 'Pedido realizado com sucesso!',
-    error: 'Não foi possível finalizar seu pedido. Tente novamente.'
+    error: 'Não foi possível finalizar seu pedido. Tente novamente.',
   },
 
   auth: {
@@ -83,7 +83,7 @@ export const messages = {
     password: 'Senha',
     confirm_password: 'Confirmar senha',
     forgot_password: 'Esqueci minha senha',
-    logout: 'Sair'
+    logout: 'Sair',
   },
 
   profile: {
@@ -92,7 +92,7 @@ export const messages = {
     my_products: 'Meus produtos',
     edit_profile: 'Editar perfil',
     become_seller: 'Quero ser vendedor',
-    seller_dashboard: 'Painel do produtor'
+    seller_dashboard: 'Painel do produtor',
   },
 
   seller: {
@@ -113,22 +113,22 @@ export const messages = {
       pixBank: 'Banco ou Instituição',
       terms: 'Termos e Condições',
       acceptTerms: 'Eu aceito os termos e condições de uso',
-      save: 'Salvar Configurações'
+      save: 'Salvar Configurações',
     },
     balance: {
       title: 'Meu Saldo',
       available: 'Saldo Disponível',
       pending: 'Pendente',
       totalPaid: 'Total Recebido',
-      recentTransactions: 'Transações Recentes'
+      recentTransactions: 'Transações Recentes',
     },
     payouts: {
       title: 'Histórico de Repasses',
       amount: 'Valor',
       status: 'Status',
       date: 'Data',
-      retry: 'Tentar Novamente'
-    }
+      retry: 'Tentar Novamente',
+    },
   },
 
   seller_orders: {
@@ -149,7 +149,7 @@ export const messages = {
     total_value: 'Valor Total',
     mark_ready: 'Marcar como Pronto',
     mark_completed: 'Concluir Pedido',
-    order_for: 'Pedido para'
+    order_for: 'Pedido para',
   },
 
   status: {
@@ -159,20 +159,20 @@ export const messages = {
     ready: 'Pronto para Retirada',
     shipped: 'Enviado',
     completed: 'Concluído',
-    cancelled: 'Cancelado'
+    cancelled: 'Cancelado',
   },
 
   empty_states: {
     no_products: 'Nenhum produto encontrado.',
     no_orders: 'Você ainda não fez nenhum pedido.',
-    no_sales: 'Você ainda não realizou nenhuma venda.'
+    no_sales: 'Você ainda não realizou nenhuma venda.',
   },
 
   messages: {
     success_generic: 'Operação realizada com sucesso.',
     error_generic: 'Algo deu errado. Tente novamente.',
     loading: 'Carregando...',
-    saving: 'Salvando informações...'
+    saving: 'Salvando informações...',
   },
 
   trust: {
@@ -181,28 +181,28 @@ export const messages = {
       'Produtores verificados',
       'Compra segura',
       'Transparência na origem',
-      'Impacto social positivo'
-    ]
+      'Impacto social positivo',
+    ],
   },
 
   impact: {
     title: 'Impacto que gera valor',
-    text: 'Cada compra no SemeiaRS fortalece a agricultura familiar e a economia local.'
+    text: 'Cada compra no SemeiaRS fortalece a agricultura familiar e a economia local.',
   },
 
   faq: [
     {
       question: 'Quem pode vender no SemeiaRS?',
-      answer: 'Pequenos produtores e agricultores familiares do Rio Grande do Sul.'
+      answer: 'Pequenos produtores e agricultores familiares do Rio Grande do Sul.',
     },
     {
       question: 'Como funciona a entrega?',
-      answer: 'A entrega é combinada diretamente entre produtor e comprador.'
+      answer: 'A entrega é combinada diretamente entre produtor e comprador.',
     },
     {
       question: 'Preciso pagar para me cadastrar?',
-      answer: 'Não, o cadastro é gratuito.'
-    }
+      answer: 'Não, o cadastro é gratuito.',
+    },
   ],
 
   footer: {
@@ -210,14 +210,14 @@ export const messages = {
     contact: 'Contato',
     privacy: 'Política de privacidade',
     terms: 'Termos de uso',
-    rights: 'Todos os direitos reservados.'
-  }
+    rights: 'Todos os direitos reservados.',
+  },
 }
 
 export function t(key: string): string {
   const keys = key.split('.')
   let result: unknown = messages
-  
+
   for (const k of keys) {
     if (result && typeof result === 'object' && k in result) {
       result = (result as Record<string, unknown>)[k]
@@ -225,7 +225,7 @@ export function t(key: string): string {
       return key
     }
   }
-  
+
   return typeof result === 'string' ? result : key
 }
 

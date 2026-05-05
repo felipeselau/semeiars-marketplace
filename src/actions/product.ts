@@ -106,14 +106,14 @@ export async function deleteProduct(productId: string, sellerId: string) {
 
 export async function getProducts(search?: string, categoryId?: string) {
   const where: Record<string, unknown> = {}
-  
+
   if (search) {
     where.OR = [
       { name: { contains: search, mode: 'insensitive' } },
       { description: { contains: search, mode: 'insensitive' } },
     ]
   }
-  
+
   if (categoryId) {
     where.categoryId = categoryId
   }

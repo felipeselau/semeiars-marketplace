@@ -2,10 +2,7 @@ import { auth } from '@/lib/auth'
 import { getSellerOrderById } from '@/actions/order'
 import { NextResponse } from 'next/server'
 
-export async function GET(
-  request: Request,
-  { params }: { params: Promise<{ id: string }>
-}) {
+export async function GET(request: Request, { params }: { params: Promise<{ id: string }> }) {
   const session = await auth()
 
   if (!session || session.user.role !== 'SELLER') {
